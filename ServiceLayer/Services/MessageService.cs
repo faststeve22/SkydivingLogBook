@@ -1,4 +1,5 @@
-﻿using Logbook.Models;
+﻿using Logbook.DataAccessLayer.Interfaces;
+using Logbook.Models;
 using Logbook.ServiceLayer.Interfaces;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -9,6 +10,12 @@ namespace Logbook.ServiceLayer.Services
 {
     public class MessageService : IMessageService
     {
+        private readonly IDbUserDAO _userDAO;
+
+        public MessageService(IDbUserDAO userDAO)
+        {
+            _userDAO = userDAO;
+        }
         public void ConsumeMessage()
         {
             var factory = new ConnectionFactory() { HostName = "localhost" };
@@ -23,8 +30,12 @@ namespace Logbook.ServiceLayer.Services
                 {
                     var body = ea.Body.ToArray();
                     var message = Encoding.UTF8.GetString(body);
-                    var user = JsonConvert.DeserializeObject<User>(message);
-                    Console.WriteLine(" [x] Received {0}", message);
+                    var userInfo = JsonConvert.DeserializeObject<User>(message);
+                    User user = new User();
+                    user.UserId = userInfo.UserId;
+                    user.Username = userInfo.Username;
+                    user.EmailAddress = userInfo.EmailAddress;
+                    _userDAO.AddUser(user);
 
                     // Create user in this service's database
                 };
