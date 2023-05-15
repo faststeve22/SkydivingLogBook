@@ -1,22 +1,22 @@
-﻿using Logbook.DataAccessLayer.Interfaces;
-using Logbook.Models;
-using Logbook.ServiceLayer.Interfaces;
-using Newtonsoft.Json;
+﻿using RabbitMQ.Client.Events;
 using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 using System.Text;
+using Newtonsoft.Json;
+using Logbook.Models;
+using Logbook.DataAccessLayer.DAO;
 
-namespace Logbook.ServiceLayer.Services
+namespace Logbook.Background_Services
 {
-    public class MessageService : IMessageService
+    public class RabbitMQConsumer : BackgroundService
     {
-        private readonly IDbUserDAO _userDAO;
+        private readonly DbUserDAO _userDAO;
 
-        public MessageService(IDbUserDAO userDAO)
+        public RabbitMQConsumer(DbUserDAO userDAO)
         {
             _userDAO = userDAO;
         }
-        public void ConsumeMessage()
+
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var factory = new ConnectionFactory() { HostName = "localhost" };
             using (var connection = factory.CreateConnection())
@@ -36,13 +36,10 @@ namespace Logbook.ServiceLayer.Services
                     user.Username = userInfo.Username;
                     user.EmailAddress = userInfo.EmailAddress;
                     _userDAO.AddUser(user);
-
-                    // Create user in this service's database
                 };
                 channel.BasicConsume(queue: queueName, autoAck: true, consumer: consumer);
 
-                Console.WriteLine(" Press [enter] to exit.");
-                Console.ReadLine();
+                return Task.CompletedTask;
             }
         }
     }
