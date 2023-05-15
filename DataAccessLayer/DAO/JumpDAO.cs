@@ -9,5 +9,7 @@ namespace Logbook.DataAccessLayer.DAO
         {
             _connectionFactory = connectionFactory;
         }
+
+        
     }
 }

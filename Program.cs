@@ -1,6 +1,8 @@
 using Logbook.DataAccessLayer;
 using Logbook.DataAccessLayer.DAO;
 using Logbook.DataAccessLayer.Interfaces;
+using Logbook.ServiceLayer.Interfaces;
+using Logbook.ServiceLayer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -15,6 +17,7 @@ builder.Services.AddTransient<IDropzoneDAO, DropzoneDAO>();
 builder.Services.AddTransient<IEquipmentDAO, EquipmentDAO>();
 builder.Services.AddTransient<IJumpDAO, JumpDAO>();
 builder.Services.AddTransient<IWeatherDAO, WeatherDAO>();
+builder.Services.AddTransient<IMessageService, MessageService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
