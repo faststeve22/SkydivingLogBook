@@ -1,7 +1,6 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
 using Logbook.Models;
 using System.Data;
-using System.Security.Cryptography;
 
 namespace Logbook.DataAccessLayer.DAO
 {
@@ -20,10 +19,10 @@ namespace Logbook.DataAccessLayer.DAO
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "";
-                AddParameter(cmd, "user_id", user.UserId);
-                AddParameter(cmd, "username", user.Username);
-                AddParameter(cmd, "email_address", user.EmailAddress);
+                cmd.CommandText = "INSERT INTO DbUser (user_id, username, email_address) OUTPUT INSERTED.user_id, INSERTED.username, INSERTED.email_address (@user_id, @username, @emailAddress)";
+                AddParameter(cmd, "@user_id", user.UserId);
+                AddParameter(cmd, "@username", user.Username);
+                AddParameter(cmd, "@email_address", user.EmailAddress);
                 IDataReader reader = cmd.ExecuteReader();
                 User CreatedUser = UserReader(reader);
                 return CreatedUser;
