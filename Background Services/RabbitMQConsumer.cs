@@ -3,27 +3,34 @@ using RabbitMQ.Client;
 using System.Text;
 using Newtonsoft.Json;
 using Logbook.Models;
-using Logbook.DataAccessLayer.DAO;
+using Logbook.DataAccessLayer.Interfaces;
 
 namespace Logbook.Background_Services
 {
     public class RabbitMQConsumer : BackgroundService
     {
-        private readonly DbUserDAO _userDAO;
+        private readonly IDbUserDAO _userDAO;
+        private IConnection _connection;
+        private IModel channel;
 
-        public RabbitMQConsumer(DbUserDAO userDAO)
+        public RabbitMQConsumer(IDbUserDAO userDAO)
         {
             _userDAO = userDAO;
         }
-
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
-            using (var connection = factory.CreateConnection())
-            using (var channel = connection.CreateModel())
+            var factory = new ConnectionFactory()
+            {
+                HostName = "localhost",
+                Port = 5672, 
+                UserName = "Username",
+                Password = "Password"
+            };
+            this._connection = factory.CreateConnection();
+            this.channel = _connection.CreateModel();
             {
                 channel.ExchangeDeclare(exchange: "user_events", type: "fanout");
-                var queueName = channel.QueueDeclare().QueueName;
+                var queueName = channel.QueueDeclare(queue: "UserQueue").QueueName;
                 channel.QueueBind(queue: queueName, exchange: "user_events", routingKey: "");
                 var consumer = new EventingBasicConsumer(channel);
                 consumer.Received += (model, ea) =>
@@ -34,6 +41,8 @@ namespace Logbook.Background_Services
                     User user = new User();
                     user.UserId = userInfo.UserId;
                     user.Username = userInfo.Username;
+                    user.FirstName = userInfo.FirstName;
+                    user.LastName = userInfo.LastName;
                     user.EmailAddress = userInfo.EmailAddress;
                     _userDAO.AddUser(user);
                 };

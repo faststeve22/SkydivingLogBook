@@ -13,19 +13,21 @@ namespace Logbook.DataAccessLayer.DAO
             _connectionFactory = connectionFactory;
         }
 
-        public User AddUser(User user)
+        public void AddUser(User user)
         {
             using(IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "INSERT INTO DbUser (user_id, username, email_address) OUTPUT INSERTED.user_id, INSERTED.username, INSERTED.email_address (@user_id, @username, @emailAddress)";
+                cmd.CommandText = "INSERT INTO DbUser (user_id, username, first_name, last_name, email_address) Values (@user_id, @username, @first_name, @last_name, @email_Address)";
                 AddParameter(cmd, "@user_id", user.UserId);
                 AddParameter(cmd, "@username", user.Username);
-                AddParameter(cmd, "@email_address", user.EmailAddress);
-                IDataReader reader = cmd.ExecuteReader();
-                User CreatedUser = UserReader(reader);
-                return CreatedUser;
+                AddParameter(cmd, "@first_name", user.FirstName);
+                AddParameter(cmd, "@last_name", user.LastName);
+                AddParameter(cmd, "@email_Address", user.EmailAddress);
+                cmd.ExecuteNonQuery();
+                //User CreatedUser = UserReader(reader);
+                //return CreatedUser;
             }
         }
 
