@@ -19,8 +19,7 @@ namespace Logbook.DataAccessLayer.DAO
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "INSERT INTO DbUser (user_id, username, first_name, last_name, email_address) Values (@user_id, @username, @first_name, @last_name, @email_Address)";
-                AddParameter(cmd, "@user_id", user.UserId);
+                cmd.CommandText = "INSERT INTO DbUser (username, first_name, last_name, email_address) Values (@username, @first_name, @last_name, @email_Address)";
                 AddParameter(cmd, "@username", user.Username);
                 AddParameter(cmd, "@first_name", user.FirstName);
                 AddParameter(cmd, "@last_name", user.LastName);
@@ -58,7 +57,6 @@ namespace Logbook.DataAccessLayer.DAO
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "UPDATE DbUser SET username = @username, first_name = @firstName, last_name = @lastName, email_address = @emailAddress WHERE user_id = @userId";
-                AddParameter(cmd, "@userId", user.UserId);
                 AddParameter(cmd, "@username", user.Username);
                 AddParameter(cmd, "@firstName", user.FirstName);
                 AddParameter(cmd, "@lastName", user.LastName);

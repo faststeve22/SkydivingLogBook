@@ -19,7 +19,6 @@ namespace Logbook.DataAccessLayer.DAO
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "INSERT INTO Aircraft (aircraft_id, aircraft_name) VALUES (@aircraftId, @aircraftName)";
-                AddParameter(cmd, "@aircraftId", aircraft.AircraftId);
                 AddParameter(cmd, "@aircraftName", aircraft.AircraftName);
                 cmd.ExecuteNonQuery();
             }

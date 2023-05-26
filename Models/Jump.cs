@@ -2,19 +2,19 @@
 {
     public class Jump
     {
-        int JumpId { get; set; }
-        int UserId { get; set; }
-        int WeatherId { get; set; }
-        int AircraftId { get; set; }
-        int EquipmentId { get; set; }
-        int DropzoneId { get; set; }
-        int JumpNumber { get; set; }
-        DateTime JumpDate { get; set; }
-        string JumpType { get; set; }
-        int ExitAltitude { get; set; }
-        string LandingPattern { get; set; }
-        string Notes { get; set; }
-        int TotalJumpers { get; set; }
+       public int JumpId { get; set; }
+       public int UserId { get; set; }
+       public int WeatherId { get; set; }
+       public int AircraftId { get; set; }
+       public int EquipmentId { get; set; }
+       public int DropzoneId { get; set; }
+       public int JumpNumber { get; set; }
+       public DateTime JumpDate { get; set; }
+       public string JumpType { get; set; }
+       public int ExitAltitude { get; set; }
+       public string LandingPattern { get; set; }
+       public string Notes { get; set; }
+       public int TotalJumpers { get; set; }
 
         public Jump()
         {

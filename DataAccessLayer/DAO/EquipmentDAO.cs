@@ -1,6 +1,5 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
 using Logbook.Models;
-using Microsoft.AspNetCore.Antiforgery;
 using System.Data;
 
 namespace Logbook.DataAccessLayer.DAO
