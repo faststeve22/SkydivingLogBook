@@ -1,5 +1,6 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
 using Logbook.Models;
+using Logbook.Models.Lists;
 using System.Data;
 
 namespace Logbook.DataAccessLayer.DAO
@@ -33,7 +34,20 @@ namespace Logbook.DataAccessLayer.DAO
                 cmd.CommandText = "SELET aircraft_id, aircraft_name FROM Aircraft WHERE aircraft_id = @aircraftId";
                 AddParameter(cmd, "@aircraftId", aircraftId);
                 IDataReader reader = cmd.ExecuteReader();
-                return AircraftReader(reader);
+                return AircraftReader(reader)[0];
+            }
+        }
+
+        public AircraftList GetAircraftList(int userId)
+        {
+            using (IDbConnection conn = _connectionFactory.CreateConnection())
+            {
+                conn.Open();
+                IDbCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "SELET aircraft_id, aircraft_name FROM Aircraft JOIN Jump ON Jump.aircraft_id = Aircraft.aircraft_id WHERE Jump.user_id = @userId";
+                AddParameter(cmd, "@userId", userId);
+                IDataReader reader = cmd.ExecuteReader();
+                return new AircraftList(AircraftReader(reader));
             }
         }
 
@@ -62,12 +76,17 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        private Aircraft AircraftReader(IDataReader reader)
+        private List<Aircraft> AircraftReader(IDataReader reader)
         {
-            Aircraft aircraft = new Aircraft();
-            aircraft.AircraftId = Convert.ToInt32(reader["aircraft_id"]);
-            aircraft.AircraftName = Convert.ToString(reader["aircraft_name"]);
-            return aircraft;
+            List<Aircraft> AircraftList = new List<Aircraft>();
+            while(reader.Read())
+            {
+                Aircraft aircraft = new Aircraft();
+                aircraft.AircraftId = Convert.ToInt32(reader["aircraft_id"]);
+                aircraft.AircraftName = Convert.ToString(reader["aircraft_name"]);
+                AircraftList.Add(aircraft);
+            }
+            return AircraftList;
         }
 
         private void AddParameter(IDbCommand cmd, string parameterName, object value)

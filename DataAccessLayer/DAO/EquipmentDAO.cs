@@ -1,5 +1,6 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
 using Logbook.Models;
+using Logbook.Models.Lists;
 using System.Data;
 
 namespace Logbook.DataAccessLayer.DAO
@@ -35,7 +36,20 @@ namespace Logbook.DataAccessLayer.DAO
                 cmd.CommandText = "SELECT equipment_id, equipment_brand, equipment_model, equipment_type FROM Equipment WHERE equipment_id = @equipmentId";
                 AddParameter(cmd, "@equipmentId", equipmentId);
                 IDataReader reader = cmd.ExecuteReader();
-                return EquipmentReader(reader);
+                return EquipmentReader(reader)[0];
+            }
+        }
+
+        public EquipmentList GetEquipmentList(int userId)
+        {
+            using (IDbConnection conn = _connectionFactory.CreateConnection())
+            {
+                conn.Open();
+                IDbCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "SELECT equipment_id, equipment_brand, equipment_model, equipment_type FROM Equipment JOIN Jump ON Jump.equipment_id = Equipment.equipment_id WHERE Jump.user_id = @userId";
+                AddParameter(cmd, "@userId", userId);
+                IDataReader reader = cmd.ExecuteReader();
+                return new EquipmentList(EquipmentReader(reader));
             }
         }
 
@@ -66,14 +80,19 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        private Equipment EquipmentReader(IDataReader reader)
+        private List<Equipment> EquipmentReader(IDataReader reader)
         {
-            Equipment equipment = new Equipment();
-            equipment.EquipmentId = Convert.ToInt32(reader["equipment_id"]);
-            equipment.EquipmentBrand = Convert.ToString(reader["equipment_brand"]);
-            equipment.EquipmentModel = Convert.ToString(reader["equipment_model"]);
-            equipment.EquipmentType = Convert.ToString(reader["equipment_type"]);
-            return equipment;
+            List<Equipment> EquipmentList = new List<Equipment>();
+            while(reader.Read())
+            {
+                Equipment equipment = new Equipment();
+                equipment.EquipmentId = Convert.ToInt32(reader["equipment_id"]);
+                equipment.EquipmentBrand = Convert.ToString(reader["equipment_brand"]);
+                equipment.EquipmentModel = Convert.ToString(reader["equipment_model"]);
+                equipment.EquipmentType = Convert.ToString(reader["equipment_type"]);
+                EquipmentList.Add(equipment);
+            }
+            return EquipmentList;
         }
 
         private void AddParameter(IDbCommand cmd, string paramName, object value)

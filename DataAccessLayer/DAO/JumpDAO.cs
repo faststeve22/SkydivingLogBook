@@ -1,5 +1,6 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
 using Logbook.Models;
+using Logbook.Models.Lists;
 using System.Data;
 
 namespace Logbook.DataAccessLayer.DAO
@@ -47,7 +48,7 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public Jumps GetAllJumps(int userId)
+        public JumpList GetAllJumps(int userId)
         {   using (IDbConnection conn = _connectionFactory.CreateConnection()) 
             {
                 conn.Open();
@@ -55,7 +56,7 @@ namespace Logbook.DataAccessLayer.DAO
                 cmd.CommandText = "SELECT jump_id, user_id, weather_id, aircraft_id, equipment_id, dropzone_id, jump_number, jump_date, jump_type, exit_altitude, landing_pattern, notes, total_jumpers FROM Jump WHERE user_id = @userId";
                 AddParameter(cmd, "@userId", userId);
                 IDataReader reader = cmd.ExecuteReader();
-                return new Jumps(JumpReader(reader));
+                return new JumpList(JumpReader(reader));
             }
         }
 

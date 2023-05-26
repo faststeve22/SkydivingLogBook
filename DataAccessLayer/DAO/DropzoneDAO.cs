@@ -1,5 +1,6 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
 using Logbook.Models;
+using Logbook.Models.Lists;
 using System.Data;
 
 namespace Logbook.DataAccessLayer.DAO
@@ -39,7 +40,20 @@ namespace Logbook.DataAccessLayer.DAO
                 cmd.CommandText = "SELECT dropzone_id, dropzone_name, dropzone_country, dropzone_phone_number, dropzone_email_address, dropzone_state, dropzone_city, dropzone_address FROM Dropzone WHERE dropzone_id = @dropzoneId";
                 AddParameter(cmd, "@dropzoneId", dropzoneId);
                 IDataReader reader = cmd.ExecuteReader();
-                return DropzoneReader(reader);
+                return DropzoneReader(reader)[0];
+            }
+        }
+
+        public DropzoneList GetDropzoneList(int userId)
+        {
+            using (IDbConnection conn = _connectionFactory.CreateConnection())
+            {
+                conn.Open();
+                IDbCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "SELECT dropzone_id, dropzone_name, dropzone_country, dropzone_phone_number, dropzone_email_address, dropzone_state, dropzone_city, dropzone_address FROM Dropzone JOIN Jump ON Jump.dropzone_id = Dropzone.dropzone_id WHERE Jump.user_id = @userId";
+                AddParameter(cmd, "@userId", userId);
+                IDataReader reader = cmd.ExecuteReader();
+                return new DropzoneList(DropzoneReader(reader));
             }
         }
 
@@ -72,19 +86,24 @@ namespace Logbook.DataAccessLayer.DAO
                 cmd.ExecuteNonQuery();
             }
         }
-        
-        public Dropzone DropzoneReader(IDataReader reader)
+
+        public List<Dropzone> DropzoneReader(IDataReader reader)
         {
-            Dropzone dropzone = new Dropzone();
-            dropzone.Dropzone_id = Convert.ToInt32(reader["dropzone_id"]);
-            dropzone.Name = Convert.ToString(reader["dropzone_name"]);
-            dropzone.Country = Convert.ToString(reader["dropzone_country"]);
-            dropzone.PhoneNumber = Convert.ToString(reader["dropzone_phone_number"]);
-            dropzone.EmailAddress = Convert.ToString(reader["dropzone_email_address"]);
-            dropzone.State = Convert.ToString(reader["dropzone_state"]);
-            dropzone.City = Convert.ToString(reader["dropzone_city"]);
-            dropzone.Address = Convert.ToString(reader["dropzone_address"]);
-            return dropzone;
+            List<Dropzone> dropzones = new List<Dropzone>();
+            while (reader.Read())
+            {
+                Dropzone dropzone = new Dropzone();
+                dropzone.Dropzone_id = Convert.ToInt32(reader["dropzone_id"]);
+                dropzone.Name = Convert.ToString(reader["dropzone_name"]);
+                dropzone.Country = Convert.ToString(reader["dropzone_country"]);
+                dropzone.PhoneNumber = Convert.ToString(reader["dropzone_phone_number"]);
+                dropzone.EmailAddress = Convert.ToString(reader["dropzone_email_address"]);
+                dropzone.State = Convert.ToString(reader["dropzone_state"]);
+                dropzone.City = Convert.ToString(reader["dropzone_city"]);
+                dropzone.Address = Convert.ToString(reader["dropzone_address"]);
+                dropzones.Add(dropzone);
+            }
+            return dropzones;
         }
 
         public void AddParameter(IDbCommand cmd, string paramName, object value)
