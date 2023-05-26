@@ -18,7 +18,6 @@
   <ItemGroup>
     <Folder Include="Middleware\" />
     <Folder Include="ServiceLayer\Interfaces\" />
-    <Folder Include="ServiceLayer\Services\" />
   </ItemGroup>
 
 </Project>
