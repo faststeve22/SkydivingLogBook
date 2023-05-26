@@ -1,22 +1,31 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Logbook.PresentationLayer.DTO;
+using Logbook.ServiceLayer.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace Logbook.PresentationLayer.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class LogbookController : ControllerBase
     {
+        private readonly IJumpLogService _jumpLogService;
 
-        [HttpGet]
-        [Authorize]
-        public IEnumerable<string> Get()
+        public LogbookController(IJumpLogService jumpLogService)
         {
-            return new string[] { "value1", "value2" };
+            _jumpLogService = jumpLogService;
+        }
+    
+        [Authorize]
+        [HttpGet]
+        public JumpLogDTO GetJumpLog()
+        {
+            return new JumpLogDTO(_jumpLogService.GetUserJumpLog());
         }
 
-        [Authorize]
+     /*   [Authorize]
         [HttpGet("{id}")]
         public string Get(int id)
         {
@@ -39,6 +48,6 @@ namespace Logbook.PresentationLayer.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-        }
+        }*/
     }
 }

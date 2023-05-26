@@ -1,6 +1,6 @@
 ﻿namespace Logbook.Models
 {
-    public class User
+    public class Jumper
     {
         public int UserId { get; set; }
         public string Username { get; set; }

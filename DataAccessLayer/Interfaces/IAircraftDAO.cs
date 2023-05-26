@@ -11,9 +11,5 @@ namespace Logbook.DataAccessLayer.Interfaces
         public void UpdateAircraft(Aircraft aircraft);
         public void DeleteAircraft(int aircraftId);
 
-
-
-
-
     }
 }

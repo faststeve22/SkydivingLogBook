@@ -4,6 +4,6 @@ namespace Logbook.DataAccessLayer.Interfaces
 {
     public interface IDbUserDAO
     {
-        void AddUser(User user);
+        void AddUser(Jumper user);
     }
 }

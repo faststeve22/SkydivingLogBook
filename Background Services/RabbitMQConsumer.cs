@@ -37,8 +37,8 @@ namespace Logbook.Background_Services
                 {
                     var body = ea.Body.ToArray();
                     var message = Encoding.UTF8.GetString(body);
-                    var userInfo = JsonConvert.DeserializeObject<User>(message);
-                    User user = new User();
+                    var userInfo = JsonConvert.DeserializeObject<Jumper>(message);
+                    Jumper user = new Jumper();
                     user.UserId = userInfo.UserId;
                     user.Username = userInfo.Username;
                     user.FirstName = userInfo.FirstName;

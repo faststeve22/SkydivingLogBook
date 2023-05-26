@@ -13,7 +13,7 @@ namespace Logbook.DataAccessLayer.DAO
             _connectionFactory = connectionFactory;
         }
 
-        public void AddUser(User user)
+        public void AddUser(Jumper user)
         {
             using(IDbConnection conn = _connectionFactory.CreateConnection())
             {
@@ -30,7 +30,7 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public User GetUser(int userId)
+        public Jumper GetUser(int userId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
@@ -50,7 +50,7 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public void UpdateUser(User user)
+        public void UpdateUser(Jumper user)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
@@ -77,9 +77,9 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        private User UserReader(IDataReader reader)
+        private Jumper UserReader(IDataReader reader)
         {
-            User user = new User();
+            Jumper user = new Jumper();
             user.UserId = Convert.ToInt32(reader["user_id"]);
             user.Username = Convert.ToString(reader["username"]);
             user.FirstName = Convert.ToString(reader["first_name"]);
