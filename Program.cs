@@ -20,6 +20,7 @@ builder.Services.AddTransient<IJumpDAO, JumpDAO>();
 builder.Services.AddTransient<IWeatherDAO, WeatherDAO>();
 builder.Services.AddHostedService<RabbitMQConsumer>();
 builder.Services.AddTransient<IJumpLogService, JumpLogService>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
