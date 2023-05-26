@@ -57,7 +57,7 @@ namespace Logbook.DataAccessLayer.DAO
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "UPDATE DbUser SET (username, first_name, last_name, email_address) Values(@username, @firstName, @lastName, @emailAddress) WHERE user_id = @userId";
+                cmd.CommandText = "UPDATE DbUser SET username = @username, first_name = @firstName, last_name = @lastName, email_address = @emailAddress WHERE user_id = @userId";
                 AddParameter(cmd, "@userId", userId);
                 AddParameter(cmd, "@username", user.Username);
                 AddParameter(cmd, "@firstName", user.FirstName);
