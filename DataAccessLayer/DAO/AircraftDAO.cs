@@ -38,14 +38,15 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public void UpdateAircraft(int aircraftId)
+        public void UpdateAircraft(Aircraft aircraft)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "UPDATE Aircraft SET aircraft_name = @aircraftName WHERE aircraft_id = @aircraftId";
-                AddParameter(cmd, "@aircraftId", aircraftId);
+                AddParameter(cmd, "@aircraftId", aircraft.AircraftId);
+                AddParameter(cmd, "@aircraftName", aircraft.AircraftName);
                 cmd.ExecuteNonQuery();
             }
         }

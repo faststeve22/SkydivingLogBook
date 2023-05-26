@@ -51,14 +51,14 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public void UpdateUser(int userId, User user)
+        public void UpdateUser(User user)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "UPDATE DbUser SET username = @username, first_name = @firstName, last_name = @lastName, email_address = @emailAddress WHERE user_id = @userId";
-                AddParameter(cmd, "@userId", userId);
+                AddParameter(cmd, "@userId", user.UserId);
                 AddParameter(cmd, "@username", user.Username);
                 AddParameter(cmd, "@firstName", user.FirstName);
                 AddParameter(cmd, "@lastName", user.LastName);
