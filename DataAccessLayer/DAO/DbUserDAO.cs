@@ -85,7 +85,7 @@ namespace Logbook.DataAccessLayer.DAO
             user.UserId = Convert.ToInt32(reader["user_id"]);
             user.Username = Convert.ToString(reader["username"]);
             user.FirstName = Convert.ToString(reader["first_name"]);
-            user.LastName = Convert.ToString(reader["last_name"];
+            user.LastName = Convert.ToString(reader["last_name"]);
             user.EmailAddress = Convert.ToString(reader["email_address"]);
             return user;
         }
