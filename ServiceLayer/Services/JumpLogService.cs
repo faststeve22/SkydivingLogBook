@@ -9,31 +9,25 @@ namespace Logbook.ServiceLayer.Services
 {
     public class JumpLogService : IJumpLogService
     {
-        private readonly IAircraftDAO _aircraftDAO;
+        private readonly IAircraftService _aircraftService;
+        private readonly IUserService _userService;
         private readonly IDropzoneDAO _dropzoneDAO;
         private readonly IEquipmentDAO _equipmentDAO;
         private readonly IJumpDAO _jumpDAO;
         private readonly IWeatherDAO _weatherDAO;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public JumpLogService(IAircraftDAO aircraftDAO, IDropzoneDAO dropzoneDAO, IEquipmentDAO equipmentDAO, IJumpDAO jumpDAO, IDbUserDAO userDAO, IWeatherDAO weatherDAO, IHttpContextAccessor httpContextAccessor)
+        public JumpLogService(IAircraftService aircraftService, IUserService userService, IDropzoneDAO dropzoneDAO, IEquipmentDAO equipmentDAO, IJumpDAO jumpDAO, IDbUserDAO userDAO, IWeatherDAO weatherDAO)
         {
-            _aircraftDAO = aircraftDAO;
+            _aircraftService = aircraftService;
+            _userService = userService;
             _dropzoneDAO = dropzoneDAO;
             _equipmentDAO = equipmentDAO;
             _jumpDAO = jumpDAO;
             _weatherDAO = weatherDAO;
-            _httpContextAccessor = httpContextAccessor;
-        }
-
-        private int GetUserId()
-        {
-            return int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
         }
 
         public JumpLogDTO GetUserJumpLog()
         {
-            int userId = GetUserId();
+            int userId = _userService.GetUserId();
             JumpLog jumpLog = new JumpLog(GetJumpsByUserId(userId), GetAircraftByUserId(userId), GetDropzonesByUserId(userId), GetEquipmentByUserId(userId), GetWeatherListByUserId(userId));
             return ConvertModelToDTO(jumpLog);
         }
@@ -44,7 +38,7 @@ namespace Logbook.ServiceLayer.Services
 
         public AircraftList GetAircraftByUserId(int userId)
         {
-            return _aircraftDAO.GetAircraftList(userId);
+            return _aircraftService.GetAircraftListByUserId(userId);
         }
        
         public DropzoneList GetDropzonesByUserId(int userId)

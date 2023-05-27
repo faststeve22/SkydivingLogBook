@@ -1,6 +1,9 @@
-﻿namespace Logbook.ServiceLayer.Interfaces
+﻿
+namespace Logbook.ServiceLayer.Interfaces
 {
     public interface IUserService
     {
+        public int GetUserId();
+
     }
 }

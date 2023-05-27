@@ -25,7 +25,7 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public Aircraft GetAircraft(int aircraftId)
+        public Aircraft GetAircraftById(int aircraftId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
@@ -38,7 +38,19 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public AircraftList GetAircraftList(int userId)
+        public AircraftList GetAircraftList()
+        {
+            using (IDbConnection conn = _connectionFactory.CreateConnection())
+            {
+                conn.Open();
+                IDbCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "SELET aircraft_id, aircraft_name FROM Aircraft";
+                IDataReader reader = cmd.ExecuteReader();
+                return new AircraftList(AircraftReader(reader));
+            }
+        }
+
+        public AircraftList GetAircraftListByUserId(int userId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {

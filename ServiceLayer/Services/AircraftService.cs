@@ -1,5 +1,6 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
 using Logbook.Models;
+using Logbook.Models.Lists;
 using Logbook.PresentationLayer.DTO;
 using Logbook.ServiceLayer.Interfaces;
 
@@ -15,9 +16,18 @@ namespace Logbook.ServiceLayer.Services
 
         public Aircraft GetAircraft(int aircraftId)
         {
-            return _aircraftDAO.GetAircraft(aircraftId);
+            return _aircraftDAO.GetAircraftById(aircraftId);
+        }
+        
+        public AircraftList GetAircraftList()
+        {
+            return _aircraftDAO.GetAircraftList();
         }
 
+        public AircraftList GetAircraftListByUserId(int userId)
+        {
+            return _aircraftDAO.GetAircraftListByUserId(userId);
+        }
         public void AddAircraft(AircraftDTO aircraftDTO)
         {
             _aircraftDAO.AddAircraft(ConvertDTOToModel(aircraftDTO));
