@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Logbook.PresentationLayer.DTO;
+using Logbook.ServiceLayer.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace Logbook.PresentationLayer.Controllers
@@ -7,31 +10,46 @@ namespace Logbook.PresentationLayer.Controllers
     [ApiController]
     public class DropzoneController : ControllerBase
     {
+        private readonly IDropzoneService _dropzoneService;
+
+        public DropzoneController(IDropzoneService dropzoneService)
+        {
+            _dropzoneService = dropzoneService;
+        }
+
+        [Authorize]
         [HttpGet]
-        public IEnumerable<string> Get()
+        public DropzoneListDTO Get()
         {
-            return new string[] { "value1", "value2" };
+            return _dropzoneService.GetDropzoneList();
         }
 
+        [Authorize]
         [HttpGet("{id}")]
-        public string Get(int id)
+        public DropzoneDTO Get(int id)
         {
-            return "value";
+            return _dropzoneService.GetDropzoneById(id);
         }
 
+        [Authorize]
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] DropzoneDTO dto)
         {
+            _dropzoneService.AddDropzone(dto);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put([FromBody] DropzoneDTO dto)
         {
+            _dropzoneService.UpdateDropzone(dto);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _dropzoneService.DeleteDropzone(id);
         }
     }
 }

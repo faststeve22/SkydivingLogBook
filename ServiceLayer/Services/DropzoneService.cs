@@ -35,6 +35,12 @@ namespace Logbook.ServiceLayer.Services
             _dropzoneDAO.AddDropzone(dropzone);
         }
 
+        public void UpdateDropzone(DropzoneDTO dto)
+        {
+            Dropzone dropzone = new Dropzone(dto);
+            _dropzoneDAO.UpdateDropzone(dropzone);
+        }
+
         public void DeleteDropzone(int dropzoneId)
         {
             _dropzoneDAO.DeleteDropzone(dropzoneId);
