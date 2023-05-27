@@ -15,5 +15,10 @@ namespace Logbook.Models.Lists
         {
             Weather = dto.weatherList;
         }
+
+        public void Add(Weather weather)
+        {
+            Weather.Add(weather);
+        }
     }
 }

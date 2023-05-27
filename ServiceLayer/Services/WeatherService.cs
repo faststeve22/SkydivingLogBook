@@ -2,6 +2,7 @@
 using Logbook.Models;
 using Logbook.PresentationLayer.DTO;
 using Logbook.ServiceLayer.Interfaces;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace Logbook.ServiceLayer.Services
 {
@@ -44,6 +45,11 @@ namespace Logbook.ServiceLayer.Services
         public void DeleteWeather(int weatherId)
         {
             _weatherDAO.DeleteWeather(weatherId);
+        }
+
+        public void DeleteWeatherByUserId(int userId)
+        {
+            _weatherDAO.DeleteWeatherByUserId(userId);
         }
     }
 }

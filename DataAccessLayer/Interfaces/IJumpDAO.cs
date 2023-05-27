@@ -11,7 +11,7 @@ namespace Logbook.DataAccessLayer.Interfaces
         public JumpList GetJumpsByUserId(int userId);
         public void UpdateJump(Jump jump);
         public void DeleteJump(int jumpId);
-
+        public void DeleteJumpsByUserId(int userId);
 
     }
 }

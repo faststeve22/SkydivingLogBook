@@ -11,5 +11,7 @@ namespace Logbook.DataAccessLayer.Interfaces
         public WeatherList GetWeatherListByUserId(int userId);
         public void UpdateWeather(Weather weather);
         public void DeleteWeather(int weatherId);
+        public void DeleteWeatherByUserId(int userId);
+
     }
 }

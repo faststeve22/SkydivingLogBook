@@ -25,9 +25,9 @@ namespace Logbook.PresentationLayer.Controllers
 
         [Authorize]
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(int userId)
         {
-            _jumpLogService.DeleteJumpLog();
+            _jumpLogService.DeleteJumpLog(userId);
         }
     }
 }

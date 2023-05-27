@@ -44,5 +44,9 @@ namespace Logbook.ServiceLayer.Services
             _jumpDAO.DeleteJump(jumpId);
         }
 
+        public void DeleteJumpsByUserId(int userId)
+        {
+            _jumpDAO.DeleteJumpsByUserId(userId);
+        }
     }
 }

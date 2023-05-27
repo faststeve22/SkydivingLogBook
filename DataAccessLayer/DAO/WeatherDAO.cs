@@ -39,7 +39,7 @@ namespace Logbook.DataAccessLayer.DAO
                 cmd.CommandText = "SELECT weather_id, ground_temperature, ground_wind_speed, additional_notes, ground_wind_direction_at_takeoff, ground_wind_direction_at_landing, temperature_at_jump_altitude FROM Weather WHERE weather_id = @weatherId";
                 AddParameter(cmd, "@weatherId", weatherId);
                 IDataReader reader = cmd.ExecuteReader();
-                return WeatherReader(reader)[0];
+                return WeatherReader(reader).Weather[0];
             }
         }
 
@@ -51,7 +51,7 @@ namespace Logbook.DataAccessLayer.DAO
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "SELECT weather_id, ground_temperature, ground_wind_speed, additional_notes, ground_wind_direction_at_takeoff, ground_wind_direction_at_landing, temperature_at_jump_altitude FROM Weather";               
                 IDataReader reader = cmd.ExecuteReader();
-                return new WeatherList(WeatherReader(reader));
+                return WeatherReader(reader);
             }
         }
 
@@ -64,7 +64,7 @@ namespace Logbook.DataAccessLayer.DAO
                 cmd.CommandText = "SELECT weather_id, ground_temperature, ground_wind_speed, additional_notes, ground_wind_direction_at_takeoff, ground_wind_direction_at_landing, temperature_at_jump_altitude FROM Weather JOIN Jump ON Jump.weather_id = Weather.weather_id WHERE user_id = @userId";
                 AddParameter(cmd, "@userId", userId);
                 IDataReader reader = cmd.ExecuteReader();
-                return new WeatherList(WeatherReader(reader));
+                return WeatherReader(reader);
             }
         }
 
@@ -99,9 +99,21 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        private List<Weather> WeatherReader(IDataReader reader)
+        public void DeleteWeatherByUserId(int userId)
         {
-            List<Weather> WeatherList = new List<Weather>();
+            using (IDbConnection conn = _connectionFactory.CreateConnection())
+            {
+                conn.Open();
+                IDbCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "DELETE FROM Weather JOIN Jump on Weather.weather_id = Jump.weather_id WHERE Jump.user_id = @userId";
+                AddParameter(cmd, "@userId", userId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private WeatherList WeatherReader(IDataReader reader)
+        {
+            WeatherList weatherList = new WeatherList();
             while(reader.Read())
             {
                 Weather weather = new Weather();
@@ -112,9 +124,9 @@ namespace Logbook.DataAccessLayer.DAO
                 weather.GroundWindDirectionAtTakeoff = Convert.ToString(reader["ground_wind_direction_at_takeoff"]);
                 weather.GroundWindDirectionAtLanding = Convert.ToString(reader["ground_wind_direction_at_landing"]);
                 weather.TemperatureAtJumpAltitude = Convert.ToInt32(reader["temperature_at_jump_altitude"]);
-                WeatherList.Add(weather);
+                weatherList.Add(weather);
             }
-            return WeatherList;
+            return weatherList;
         }
 
         private void AddParameter(IDbCommand cmd, string paramName, object value)

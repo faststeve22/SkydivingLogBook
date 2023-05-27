@@ -15,7 +15,7 @@ namespace Logbook.DataAccessLayer.DAO
 
         public void AddEquipment(Equipment equipment)
         {
-            using(IDbConnection conn = _connectionFactory.CreateConnection())
+            using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
@@ -88,6 +88,18 @@ namespace Logbook.DataAccessLayer.DAO
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "DELETE FROM Equipment WHERE equipment_id = @equipmentId";
                 AddParameter(cmd, "@equipmentId", equipmentId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteEquipmentByUserId(int userId)
+        {
+            using (IDbConnection conn = _connectionFactory.CreateConnection())
+            {
+                conn.Open();
+                IDbCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "DELETE FROM Equipment JOIN Jump on Equipment.equipment_id = Jump.equipment_id WHERE user_id = @userId";
+                AddParameter(cmd, "@userId", userId);
                 cmd.ExecuteNonQuery();
             }
         }

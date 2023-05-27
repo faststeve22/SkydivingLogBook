@@ -30,7 +30,12 @@ namespace Logbook.ServiceLayer.Services
             return new JumpLogDTO(jumpLog);
         }
 
-       //  public void DeleteJumpLog()
+        public void DeleteJumpLog(int userId)
+        {
+            _equipmentService.DeleteEquipmentByUserId(userId);
+            _weatherService.DeleteWeatherByUserId(userId);
+            _jumpService.DeleteJumpsByUserId(userId);
+        }
 
         private JumpList GetJumpsByUserId(int userId)
         {
@@ -41,7 +46,7 @@ namespace Logbook.ServiceLayer.Services
         {
             return new AircraftList(_aircraftService.GetAircraftListByUserId(userId));
         }
-       
+
         private DropzoneList GetDropzonesByUserId(int userId)
         {
             return new DropzoneList(_dropzoneService.GetDropzoneListByUserId(userId));

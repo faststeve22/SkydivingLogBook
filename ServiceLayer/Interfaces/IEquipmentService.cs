@@ -10,6 +10,7 @@ namespace Logbook.ServiceLayer.Interfaces
         public EquipmentListDTO GetEquipmentListByUserId(int userId);
         public void UpdateEquipment(EquipmentDTO dto);
         public void DeleteEquipment(int equipmentId);
+        public void DeleteEquipmentByUserId(int userId);
 
     }
 }

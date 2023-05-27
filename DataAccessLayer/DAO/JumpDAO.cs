@@ -107,6 +107,18 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
+        public void DeleteJumpsByUserId(int userId)
+        {
+            using (IDbConnection conn = _connectionFactory.CreateConnection())
+            {
+                conn.Open();
+                IDbCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "DELETE FROM Jump WHERE user_id = @userId";
+                AddParameter(cmd, "@userId", userId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         private List<Jump> JumpReader(IDataReader reader)
         {
             List<Jump> JumpList = new List<Jump>();

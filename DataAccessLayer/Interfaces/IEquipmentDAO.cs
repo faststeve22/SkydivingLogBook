@@ -11,5 +11,7 @@ namespace Logbook.DataAccessLayer.Interfaces
         public EquipmentList GetEquipmentListByUserId(int userId);
         public void UpdateEquipment(Equipment equipment);
         public void DeleteEquipment(int equipmentId);
+        public void DeleteEquipmentByUserId(int userId);
+
     }
 }

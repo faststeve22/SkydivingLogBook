@@ -45,6 +45,11 @@ namespace Logbook.ServiceLayer.Services
         {
             _equipmentDAO.DeleteEquipment(equipmentId);
         }
+
+        public void DeleteEquipmentByUserId(int userId)
+        {
+            _equipmentDAO.DeleteEquipmentByUserId(userId);
+        }
         
     }
 }
