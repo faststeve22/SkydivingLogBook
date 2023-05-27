@@ -14,19 +14,19 @@ namespace Logbook.ServiceLayer.Services
             _aircraftDAO = aircraftDAO;
         }
 
-        public Aircraft GetAircraft(int aircraftId)
+        public AircraftDTO GetAircraft(int aircraftId)
         {
-            return _aircraftDAO.GetAircraftById(aircraftId);
+            return ConvertModelToDTO(_aircraftDAO.GetAircraftById(aircraftId));
         }
         
-        public AircraftList GetAircraftList()
+        public AircraftListDTO GetAircraftList()
         {
-            return _aircraftDAO.GetAircraftList();
+            return ConvertModelToDTO(_aircraftDAO.GetAircraftList());
         }
 
-        public AircraftList GetAircraftListByUserId(int userId)
+        public AircraftListDTO GetAircraftListByUserId(int userId)
         {
-            return _aircraftDAO.GetAircraftListByUserId(userId);
+            return ConvertModelToDTO(_aircraftDAO.GetAircraftListByUserId(userId));
         }
         public void AddAircraft(AircraftDTO aircraftDTO)
         {
@@ -51,6 +51,21 @@ namespace Logbook.ServiceLayer.Services
             }
             aircraft.AircraftName = aircraftDTO.AircraftName;
             return aircraft;
+        }
+
+        private AircraftDTO ConvertModelToDTO(Aircraft model)
+        {
+            AircraftDTO dto = new AircraftDTO();
+            dto.AircraftId = model.AircraftId;
+            dto.AircraftName = model.AircraftName;
+            return dto;
+        }
+
+        private AircraftListDTO ConvertModelToDTO(AircraftList model)
+        {
+            AircraftListDTO dto = new AircraftListDTO();
+            dto.Aircraft = model.Aircraft;
+            return dto;
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using Logbook.PresentationLayer.DTO;
+using Logbook.ServiceLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Logbook.PresentationLayer.Controllers
@@ -7,10 +8,17 @@ namespace Logbook.PresentationLayer.Controllers
     [ApiController]
     public class AircraftController : ControllerBase
     {
+        private readonly IAircraftService _aircraftService;
+
+        public AircraftController(IAircraftService aircraftService)
+        {
+            _aircraftService = aircraftService;
+        }
+
         [HttpGet]
         public AircraftListDTO Get()
         {
-            
+            return _aircraftService.GetAircraftList();
         }
 
         [HttpGet("{id}")]

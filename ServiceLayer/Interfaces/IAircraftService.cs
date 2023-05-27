@@ -1,14 +1,13 @@
 ﻿using Logbook.Models;
-using Logbook.Models.Lists;
 using Logbook.PresentationLayer.DTO;
 
 namespace Logbook.ServiceLayer.Interfaces
 {
     public interface IAircraftService
     {
-        public Aircraft GetAircraft(int aircraftId);
-        public AircraftList GetAircraftList();
-        public AircraftList GetAircraftListByUserId(int userId);
+        public AircraftDTO GetAircraft(int aircraftId);
+        public AircraftListDTO GetAircraftList();
+        public AircraftListDTO GetAircraftListByUserId(int userId);
 
 
         public void AddAircraft(AircraftDTO aircraftDTO);
