@@ -1,5 +1,4 @@
-﻿using Logbook.DataAccessLayer.Interfaces;
-using Logbook.Models;
+﻿using Logbook.Models;
 using Logbook.Models.Lists;
 using Logbook.PresentationLayer.DTO;
 using Logbook.ServiceLayer.Interfaces;
@@ -13,15 +12,15 @@ namespace Logbook.ServiceLayer.Services
         private readonly IDropzoneService _dropzoneService;
         private readonly IEquipmentService _equipmentService;
         private readonly IJumpService _jumpService;
-        private readonly IWeatherDAO _weatherDAO;
-        public JumpLogService(IAircraftService aircraftService, IUserService userService, IDropzoneService dropzoneService, IEquipmentService equipmentService, IJumpService jumpService, IDbUserDAO userDAO, IWeatherDAO weatherDAO)
+        private readonly IWeatherService _weatherService;
+        public JumpLogService(IAircraftService aircraftService, IUserService userService, IDropzoneService dropzoneService, IEquipmentService equipmentService, IJumpService jumpService, IWeatherService weatherService)
         {
             _aircraftService = aircraftService;
             _userService = userService;
             _dropzoneService = dropzoneService;
             _equipmentService = equipmentService;
             _jumpService = jumpService;
-            _weatherDAO = weatherDAO;
+            _weatherService = weatherService;
         }
 
         public JumpLogDTO GetUserJumpLog()
@@ -51,7 +50,7 @@ namespace Logbook.ServiceLayer.Services
         }
         public WeatherList GetWeatherListByUserId(int userId)
         {
-            return _weatherDAO.GetWeatherList(userId);
+            return _weatherService.GetWeatherListByUserId(userId);
         }
 
         private JumpLogDTO ConvertModelToDTO(JumpLog jumpLog)

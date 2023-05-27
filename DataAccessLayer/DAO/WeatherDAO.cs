@@ -30,7 +30,7 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public Weather GetWeather(int weatherId)
+        public Weather GetWeatherById(int weatherId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
@@ -43,7 +43,19 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public WeatherList GetWeatherList(int userId)
+        public WeatherList GetWeatherList()
+        {
+            using (IDbConnection conn = _connectionFactory.CreateConnection())
+            {
+                conn.Open();
+                IDbCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "SELECT weather_id, ground_temperature, ground_wind_speed, additional_notes, ground_wind_direction_at_takeoff, ground_wind_direction_at_landing, temperature_at_jump_altitude FROM Weather";               
+                IDataReader reader = cmd.ExecuteReader();
+                return new WeatherList(WeatherReader(reader));
+            }
+        }
+
+        public WeatherList GetWeatherListByUserId(int userId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
