@@ -11,15 +11,15 @@ namespace Logbook.ServiceLayer.Services
     {
         private readonly IAircraftService _aircraftService;
         private readonly IUserService _userService;
-        private readonly IDropzoneDAO _dropzoneDAO;
+        private readonly IDropzoneService _dropzoneService;
         private readonly IEquipmentDAO _equipmentDAO;
         private readonly IJumpDAO _jumpDAO;
         private readonly IWeatherDAO _weatherDAO;
-        public JumpLogService(IAircraftService aircraftService, IUserService userService, IDropzoneDAO dropzoneDAO, IEquipmentDAO equipmentDAO, IJumpDAO jumpDAO, IDbUserDAO userDAO, IWeatherDAO weatherDAO)
+        public JumpLogService(IAircraftService aircraftService, IUserService userService, IDropzoneService dropzoneService, IEquipmentDAO equipmentDAO, IJumpDAO jumpDAO, IDbUserDAO userDAO, IWeatherDAO weatherDAO)
         {
             _aircraftService = aircraftService;
             _userService = userService;
-            _dropzoneDAO = dropzoneDAO;
+            _dropzoneService = dropzoneService;
             _equipmentDAO = equipmentDAO;
             _jumpDAO = jumpDAO;
             _weatherDAO = weatherDAO;
@@ -43,7 +43,7 @@ namespace Logbook.ServiceLayer.Services
        
         public DropzoneList GetDropzonesByUserId(int userId)
         {
-            return _dropzoneDAO.GetDropzoneList(userId);
+            return _dropzoneService.GetDropzoneListByUserId(userId);
         }
 
         public EquipmentList GetEquipmentByUserId(int userId)

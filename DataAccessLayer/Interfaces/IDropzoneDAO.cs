@@ -7,7 +7,9 @@ namespace Logbook.DataAccessLayer.Interfaces
     {
         public void AddDropzone(Dropzone dropzone);
         public Dropzone GetDropzone(int dropzoneId);
-        public DropzoneList GetDropzoneList(int userId);
+        public DropzoneList GetDropzoneListByUserId(int userId);
+        public DropzoneList GetDropzoneList();
+
         public void UpdateDropzone(Dropzone dropzone);
         public void DeleteDropzone(int dropzoneId);
     }

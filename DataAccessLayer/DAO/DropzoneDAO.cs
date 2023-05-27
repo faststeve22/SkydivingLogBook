@@ -44,7 +44,19 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public DropzoneList GetDropzoneList(int userId)
+        public DropzoneList GetDropzoneList()
+        {
+            using (IDbConnection conn = _connectionFactory.CreateConnection())
+            {
+                conn.Open();
+                IDbCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "SELECT dropzone_id, dropzone_name, dropzone_country, dropzone_phone_number, dropzone_email_address, dropzone_state, dropzone_city, dropzone_address FROM Dropzone";
+                IDataReader reader = cmd.ExecuteReader();
+                return new DropzoneList(DropzoneReader(reader));
+            }
+        }
+
+        public DropzoneList GetDropzoneListByUserId(int userId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
