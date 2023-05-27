@@ -21,6 +21,11 @@ builder.Services.AddTransient<IWeatherDAO, WeatherDAO>();
 builder.Services.AddHostedService<RabbitMQConsumer>();
 builder.Services.AddTransient<IJumpLogService, JumpLogService>();
 builder.Services.AddTransient<IJumpService, JumpService>();
+builder.Services.AddTransient<IAircraftService, AircraftService>();
+builder.Services.AddTransient<IEquipmentService, EquipmentService>();
+builder.Services.AddTransient<IWeatherService, WeatherService>();
+builder.Services.AddTransient<IDropzoneService, DropzoneService>();
+builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddHttpContextAccessor();
 
 
