@@ -47,7 +47,7 @@ namespace Logbook.ServiceLayer.Services
 
         public EquipmentList GetEquipmentByUserId(int userId)
         {
-            return _equipmentDAO.GetEquipmentList(userId);
+            return _equipmentService.GetEquipmentListByUserId(userId);
         }
         public WeatherList GetWeatherListByUserId(int userId)
         {
