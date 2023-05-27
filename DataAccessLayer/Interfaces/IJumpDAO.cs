@@ -8,7 +8,7 @@ namespace Logbook.DataAccessLayer.Interfaces
         public void AddJump(Jump jump);
         public Jump GetJump(int jumpId);
         public JumpList GetAllJumps(int userId);
-        public void UpdateJump(Jump jump);
+        public void UpdateJump(int jumpId, Jump jump);
         public void DeleteJump(int jumpId);
 
 

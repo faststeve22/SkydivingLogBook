@@ -60,14 +60,14 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public void UpdateJump(Jump jump)
+        public void UpdateJump(int jumpId, Jump jump)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "UPDATE Jump SET user_id = @userId, weather_id = @weatherId, aircraft_id = @aircraftId, equipment_id = @equipmentId, dropzone_id = @dropzoneId, jump_number = @jumpNumber, jump_date = @jumpDate, jump_type = @jumpType, exit_altitude = @exitAltitude, landing_pattern = @landingPattern, notes = @notes, total_jumpers = @totalJumpers WHERE jump_id = @jumpId";
-                AddParameter(cmd, "@jumpId", jump.JumpId);
+                AddParameter(cmd, "@jumpId", jumpId);
                 AddParameter(cmd, "@userId", jump.UserId);
                 AddParameter(cmd, "@weatherId", jump.WeatherId);
                 AddParameter(cmd, "@aircraftId", jump.AircraftId);
