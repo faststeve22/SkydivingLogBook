@@ -25,7 +25,7 @@ namespace Logbook.PresentationLayer.Controllers
         [HttpGet("/jumplog")]
         public JumpLogDTO GetJumpLog()
         {
-            return new JumpLogDTO(_jumpLogService.GetUserJumpLog());
+            return _jumpLogService.GetUserJumpLog();
         }
 
         [Authorize]

@@ -15,7 +15,7 @@
        public string Notes { get; set; }
        public int TotalJumpers { get; set; }
 
-        public JumpDTO(int userId, int weatherId, int aircraftId, int equipmentId, int dropzoneId, int jumpNumber, DateTime jumpDate, string jumpType, int exitAltitude, string landingPattern, string notes, int totalJumpers)
+       /* public JumpDTO(int userId, int weatherId, int aircraftId, int equipmentId, int dropzoneId, int jumpNumber, DateTime jumpDate, string jumpType, int exitAltitude, string landingPattern, string notes, int totalJumpers)
         {
             UserId = userId;
             WeatherId = weatherId;
@@ -28,6 +28,6 @@
             LandingPattern = landingPattern;
             Notes = notes;
             TotalJumpers = totalJumpers;
-        }
+        }*/
     }
 }

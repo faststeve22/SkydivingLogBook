@@ -1,6 +1,7 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
 using Logbook.Models;
 using Logbook.Models.Lists;
+using Logbook.PresentationLayer.DTO;
 using Logbook.ServiceLayer.Interfaces;
 using System.Security.Claims;
 
@@ -30,10 +31,11 @@ namespace Logbook.ServiceLayer.Services
             return int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
         }
 
-        public JumpLog GetUserJumpLog()
+        public JumpLogDTO GetUserJumpLog()
         {
             int userId = GetUserId();
-            return new JumpLog(GetJumpsByUserId(userId), GetAircraftByUserId(userId), GetDropzonesByUserId(userId), GetEquipmentByUserId(userId), GetWeatherListByUserId(userId));
+            JumpLog jumpLog = new JumpLog(GetJumpsByUserId(userId), GetAircraftByUserId(userId), GetDropzonesByUserId(userId), GetEquipmentByUserId(userId), GetWeatherListByUserId(userId));
+            return ConvertModelToDTO(jumpLog);
         }
         public JumpList GetJumpsByUserId(int userId)
         {
@@ -57,6 +59,17 @@ namespace Logbook.ServiceLayer.Services
         public WeatherList GetWeatherListByUserId(int userId)
         {
             return _weatherDAO.GetWeatherList(userId);
+        }
+
+        private JumpLogDTO ConvertModelToDTO(JumpLog jumpLog)
+        {
+            JumpLogDTO dto = new JumpLogDTO();
+            dto.Jumps = jumpLog.Jumps;
+            dto.Aircraft = jumpLog.Aircraft;
+            dto.Dropzones = jumpLog.Dropzones;
+            dto.Equipment = jumpLog.Equipment;
+            dto.Weather = jumpLog.Weather;
+            return dto;
         }
     }
 }
