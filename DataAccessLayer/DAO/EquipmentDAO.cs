@@ -27,7 +27,7 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public Equipment GetEquipment(int equipmentId)
+        public Equipment GetEquipmentById(int equipmentId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
@@ -40,13 +40,25 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public EquipmentList GetEquipmentList(int userId)
+        public EquipmentList GetEquipmentList()
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "SELECT equipment_id, equipment_brand, equipment_model, equipment_type FROM Equipment JOIN Jump ON Jump.equipment_id = Equipment.equipment_id WHERE Jump.user_id = @userId";
+                cmd.CommandText = "SELECT equipment_id, equipment_brand, equipment_model, equipment_type FROM Equipment";
+                IDataReader reader = cmd.ExecuteReader();
+                return new EquipmentList(EquipmentReader(reader));
+            }
+        }
+
+        public EquipmentList GetEquipmentListByUserId(int userId)
+        {
+            using (IDbConnection conn = _connectionFactory.CreateConnection())
+            {
+                conn.Open();
+                IDbCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "SELECT equipment_id, equipment_brand, equipment_model, equipment_type FROM Equipment JOIN Jump on Equipment.equipment_id = Jump.equipment_id WHERE user_id = @userId";
                 AddParameter(cmd, "@userId", userId);
                 IDataReader reader = cmd.ExecuteReader();
                 return new EquipmentList(EquipmentReader(reader));

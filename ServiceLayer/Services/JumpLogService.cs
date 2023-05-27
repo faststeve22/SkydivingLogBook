@@ -3,7 +3,6 @@ using Logbook.Models;
 using Logbook.Models.Lists;
 using Logbook.PresentationLayer.DTO;
 using Logbook.ServiceLayer.Interfaces;
-using System.Security.Claims;
 
 namespace Logbook.ServiceLayer.Services
 {
@@ -12,15 +11,15 @@ namespace Logbook.ServiceLayer.Services
         private readonly IAircraftService _aircraftService;
         private readonly IUserService _userService;
         private readonly IDropzoneService _dropzoneService;
-        private readonly IEquipmentDAO _equipmentDAO;
+        private readonly IEquipmentService _equipmentService;
         private readonly IJumpDAO _jumpDAO;
         private readonly IWeatherDAO _weatherDAO;
-        public JumpLogService(IAircraftService aircraftService, IUserService userService, IDropzoneService dropzoneService, IEquipmentDAO equipmentDAO, IJumpDAO jumpDAO, IDbUserDAO userDAO, IWeatherDAO weatherDAO)
+        public JumpLogService(IAircraftService aircraftService, IUserService userService, IDropzoneService dropzoneService, IEquipmentService equipmentService, IJumpDAO jumpDAO, IDbUserDAO userDAO, IWeatherDAO weatherDAO)
         {
             _aircraftService = aircraftService;
             _userService = userService;
             _dropzoneService = dropzoneService;
-            _equipmentDAO = equipmentDAO;
+            _equipmentService = equipmentService;
             _jumpDAO = jumpDAO;
             _weatherDAO = weatherDAO;
         }
