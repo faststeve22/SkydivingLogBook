@@ -2,6 +2,7 @@
 {
     public class JumpDTO
     {
+       public int JumpId { get; set; }
        public int UserId { get; set; }
        public int WeatherId { get; set; }
        public int AircraftId { get; set; }

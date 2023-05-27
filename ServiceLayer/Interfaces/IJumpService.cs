@@ -1,4 +1,5 @@
 ﻿using Logbook.Models;
+using Logbook.Models.Lists;
 using Logbook.PresentationLayer.DTO;
 
 namespace Logbook.ServiceLayer.Interfaces
@@ -7,10 +8,13 @@ namespace Logbook.ServiceLayer.Interfaces
     {
         public void AddJump(JumpDTO jump);
 
-        public Jump GetJump(int jumpId);
+        public Jump GetJumpById(int jumpId);
 
-        public void UpdateJump(int jumpId, JumpDTO jump);
+        public JumpList GetJumps();
+
+        public JumpList GetJumpsByUserId(int userId);
+
+        public void UpdateJump(JumpDTO dto);
         public void DeleteJump(int jumpId);
-
     }
 }

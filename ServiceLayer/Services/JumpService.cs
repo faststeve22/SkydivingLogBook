@@ -1,5 +1,6 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
 using Logbook.Models;
+using Logbook.Models.Lists;
 using Logbook.PresentationLayer.DTO;
 using Logbook.ServiceLayer.Interfaces;
 
@@ -17,14 +18,24 @@ namespace Logbook.ServiceLayer.Services
         {
             _jumpDAO.AddJump(ConvertDTOToModel(jumpDTO));
         }
-        public Jump GetJump(int jumpId)
+        public Jump GetJumpById(int jumpId)
         {
-            return _jumpDAO.GetJump(jumpId);
+            return _jumpDAO.GetJumpById(jumpId);
         }
 
-        public void UpdateJump(int jumpId, JumpDTO jumpDTO)
+        public JumpList GetJumps()
         {
-            _jumpDAO.UpdateJump(jumpId, ConvertDTOToModel(jumpDTO));
+            return _jumpDAO.GetJumps();
+        }
+
+        public JumpList GetJumpsByUserId(int userId)
+        {
+            return _jumpDAO.GetJumpsByUserId(userId);
+        }
+
+        public void UpdateJump(JumpDTO jumpDTO)
+        {
+            _jumpDAO.UpdateJump(ConvertDTOToModel(jumpDTO));
         }
 
         public void DeleteJump(int jumpId)
@@ -35,6 +46,10 @@ namespace Logbook.ServiceLayer.Services
         private Jump ConvertDTOToModel(JumpDTO jumpDTO)
         {
             Jump jump = new Jump();
+            if(jump.JumpId != 0)
+            {
+                jump.JumpId = jumpDTO.JumpId;
+            }
             jump.UserId = jumpDTO.UserId;
             jump.WeatherId = jumpDTO.WeatherId;
             jump.AircraftId = jumpDTO.AircraftId;

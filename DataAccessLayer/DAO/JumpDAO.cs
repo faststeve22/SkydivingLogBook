@@ -35,7 +35,7 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public Jump GetJump(int jumpId)
+        public Jump GetJumpById(int jumpId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
@@ -48,7 +48,18 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public JumpList GetAllJumps(int userId)
+        public JumpList GetJumps()
+        {
+            using (IDbConnection conn = _connectionFactory.CreateConnection())
+            {
+                conn.Open();
+                IDbCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "SELECT jump_id, user_id, weather_id, aircraft_id, equipment_id, dropzone_id, jump_number, jump_date, jump_type, exit_altitude, landing_pattern, notes, total_jumpers FROM Jump";
+                IDataReader reader = cmd.ExecuteReader();
+                return new JumpList(JumpReader(reader));
+            }
+        }
+        public JumpList GetJumpsByUserId(int userId)
         {   using (IDbConnection conn = _connectionFactory.CreateConnection()) 
             {
                 conn.Open();
@@ -60,14 +71,14 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public void UpdateJump(int jumpId, Jump jump)
+        public void UpdateJump(Jump jump)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "UPDATE Jump SET user_id = @userId, weather_id = @weatherId, aircraft_id = @aircraftId, equipment_id = @equipmentId, dropzone_id = @dropzoneId, jump_number = @jumpNumber, jump_date = @jumpDate, jump_type = @jumpType, exit_altitude = @exitAltitude, landing_pattern = @landingPattern, notes = @notes, total_jumpers = @totalJumpers WHERE jump_id = @jumpId";
-                AddParameter(cmd, "@jumpId", jumpId);
+                AddParameter(cmd, "@jumpId", jump.JumpId);
                 AddParameter(cmd, "@userId", jump.UserId);
                 AddParameter(cmd, "@weatherId", jump.WeatherId);
                 AddParameter(cmd, "@aircraftId", jump.AircraftId);
