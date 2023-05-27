@@ -1,5 +1,4 @@
-﻿using Logbook.Models;
-using Logbook.PresentationLayer.DTO;
+﻿using Logbook.PresentationLayer.DTO;
 using Logbook.ServiceLayer.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,27 +11,18 @@ namespace Logbook.PresentationLayer.Controllers
     [ApiController]
     public class JumpController : ControllerBase
     {
-        private readonly IJumpLogService _jumpLogService;
         private readonly IJumpService _jumpService;
 
-        public JumpController(IJumpLogService jumpLogService, IJumpService jumpService)
+        public JumpController(IJumpService jumpService)
         {
-            _jumpLogService = jumpLogService;
             _jumpService = jumpService;
-        }
-    
-        [Authorize]
-        [HttpGet("/jumplog")]
-        public JumpLogDTO GetJumpLog()
-        {
-            return _jumpLogService.GetUserJumpLog();
         }
 
         [Authorize]
         [HttpGet("{id}")]
-        public Jump Get(int jumpId)
+        public JumpDTO Get(int jumpId)
         {
-            return _jumpService.GetJump(jumpId);
+            return _jumpService.GetJumpById(jumpId);
         }
 
         [Authorize]
@@ -43,17 +33,17 @@ namespace Logbook.PresentationLayer.Controllers
         }
 
         [Authorize]
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] JumpDTO jumpDTO)
+        [HttpPut]
+        public void Put([FromBody] JumpDTO jumpDTO)
         {
-            _jumpService.UpdateJump(id, jumpDTO);
+            _jumpService.UpdateJump(jumpDTO);
         }
 
         [Authorize]
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(int jumpId)
         {
-            _jumpService.DeleteJump(id);
+            _jumpService.DeleteJump(jumpId);
         }
     }
 }

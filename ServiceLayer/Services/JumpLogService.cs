@@ -27,41 +27,33 @@ namespace Logbook.ServiceLayer.Services
         {
             int userId = _userService.GetUserId();
             JumpLog jumpLog = new JumpLog(GetJumpsByUserId(userId), GetAircraftByUserId(userId), GetDropzonesByUserId(userId), GetEquipmentByUserId(userId), GetWeatherListByUserId(userId));
-            return ConvertModelToDTO(jumpLog);
-        }
-        public JumpList GetJumpsByUserId(int userId)
-        {
-            return _jumpService.GetJumpsByUserId(userId);
+            return new JumpLogDTO(jumpLog);
         }
 
-        public AircraftList GetAircraftByUserId(int userId)
+       //  public void DeleteJumpLog()
+
+        private JumpList GetJumpsByUserId(int userId)
         {
-            return _aircraftService.GetAircraftListByUserId(userId);
+            return new JumpList(_jumpService.GetJumpsByUserId(userId));
+        }
+
+        private AircraftList GetAircraftByUserId(int userId)
+        {
+            return new AircraftList(_aircraftService.GetAircraftListByUserId(userId));
         }
        
-        public DropzoneList GetDropzonesByUserId(int userId)
+        private DropzoneList GetDropzonesByUserId(int userId)
         {
-            return _dropzoneService.GetDropzoneListByUserId(userId);
+            return new DropzoneList(_dropzoneService.GetDropzoneListByUserId(userId));
         }
 
-        public EquipmentList GetEquipmentByUserId(int userId)
+        private EquipmentList GetEquipmentByUserId(int userId)
         {
-            return _equipmentService.GetEquipmentListByUserId(userId);
+            return new EquipmentList(_equipmentService.GetEquipmentListByUserId(userId));
         }
-        public WeatherList GetWeatherListByUserId(int userId)
+        private WeatherList GetWeatherListByUserId(int userId)
         {
-            return _weatherService.GetWeatherListByUserId(userId);
-        }
-
-        private JumpLogDTO ConvertModelToDTO(JumpLog jumpLog)
-        {
-            JumpLogDTO dto = new JumpLogDTO();
-            dto.Jumps = jumpLog.Jumps;
-            dto.Aircraft = jumpLog.Aircraft;
-            dto.Dropzones = jumpLog.Dropzones;
-            dto.Equipment = jumpLog.Equipment;
-            dto.Weather = jumpLog.Weather;
-            return dto;
+            return new WeatherList(_weatherService.GetWeatherListByUserId(userId));
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
 using Logbook.Models;
-using Logbook.Models.Lists;
 using Logbook.PresentationLayer.DTO;
 using Logbook.ServiceLayer.Interfaces;
 
@@ -15,45 +14,30 @@ namespace Logbook.ServiceLayer.Services
             _dropzoneDAO = dropzoneDAO;
         }
 
-        public Dropzone GetDropzoneById(int dropzoneId)
+        public DropzoneDTO GetDropzoneById(int dropzoneId)
         {
-            return _dropzoneDAO.GetDropzone(dropzoneId);
+            return new DropzoneDTO(_dropzoneDAO.GetDropzone(dropzoneId));
         }
 
-        public DropzoneList GetDropzoneList()
+        public DropzoneListDTO GetDropzoneList()
         {
-            return _dropzoneDAO.GetDropzoneList();
+            return new DropzoneListDTO(_dropzoneDAO.GetDropzoneList());
         }
 
-        public DropzoneList GetDropzoneListByUserId(int userId)
+        public DropzoneListDTO GetDropzoneListByUserId(int userId)
         {
-            return _dropzoneDAO.GetDropzoneListByUserId(userId);
+            return new DropzoneListDTO(_dropzoneDAO.GetDropzoneListByUserId(userId));
         }
 
         public void AddDropzone(DropzoneDTO dto)
         {
-            _dropzoneDAO.AddDropzone(ConvertDTOToModel(dto));
+            Dropzone dropzone = new Dropzone(dto);
+            _dropzoneDAO.AddDropzone(dropzone);
         }
 
         public void DeleteDropzone(int dropzoneId)
         {
             _dropzoneDAO.DeleteDropzone(dropzoneId);
-        }
-
-        private Dropzone ConvertDTOToModel(DropzoneDTO dto)
-        {
-            Dropzone dropzone = new Dropzone();
-            if (dto.Dropzone_id != 0)
-            {
-                dropzone.Dropzone_id = dto.Dropzone_id;
-            }
-            dropzone.Name = dto.Name;
-            dropzone.PhoneNumber = dto.PhoneNumber;
-            dropzone.EmailAddress = dto.EmailAddress;
-            dropzone.State = dto.State;
-            dropzone.City = dto.City;
-            dropzone.Address = dto.Address;
-            return dropzone;
         }
     }
 }

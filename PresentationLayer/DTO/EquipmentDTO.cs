@@ -1,4 +1,6 @@
-﻿namespace Logbook.PresentationLayer.DTO
+﻿using Logbook.Models;
+
+namespace Logbook.PresentationLayer.DTO
 {
     public class EquipmentDTO
     {
@@ -6,5 +8,17 @@
         public string EquipmentType { get; set; }
         public string EquipmentBrand { get; set; }
         public string EquipmentModel { get; set; }
+
+        public EquipmentDTO()
+        {
+
+        }
+        public EquipmentDTO(Equipment equipment)
+        {
+            EquipmentId = equipment.EquipmentId;
+            EquipmentType = equipment.EquipmentType;
+            EquipmentBrand = equipment.EquipmentBrand;
+            EquipmentModel = equipment.EquipmentModel;
+        }
     }
 }

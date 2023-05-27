@@ -10,6 +10,7 @@ namespace Logbook.Models
         public EquipmentList Equipment { get; set; }
         public WeatherList Weather { get; set; }
 
+        public JumpLog() { }
         public JumpLog(JumpList jumps, AircraftList aircraft, DropzoneList dropzones, EquipmentList equipment, WeatherList weather)
         {
             Jumps = jumps;

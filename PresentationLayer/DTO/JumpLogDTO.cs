@@ -1,4 +1,5 @@
-﻿using Logbook.Models.Lists;
+﻿using Logbook.Models;
+using Logbook.Models.Lists;
 
 namespace Logbook.PresentationLayer.DTO
 {
@@ -10,13 +11,14 @@ namespace Logbook.PresentationLayer.DTO
         public EquipmentList Equipment { get; set; }
         public WeatherList Weather { get; set; }
 
-        /* public JumpLogDTO(JumpLog jumpLog)
+        public JumpLogDTO() { }
+        public JumpLogDTO(JumpLog jumpLog)
         {
             Jumps = jumpLog.Jumps;
             Aircraft = jumpLog.Aircraft;
             Dropzones = jumpLog.Dropzones;
             Equipment = jumpLog.Equipment;
             Weather = jumpLog.Weather;
-        } */
+        } 
     }
 }

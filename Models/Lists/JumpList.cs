@@ -1,12 +1,19 @@
-﻿namespace Logbook.Models.Lists
+﻿using Logbook.PresentationLayer.DTO;
+
+namespace Logbook.Models.Lists
 {
     public class JumpList
     {
-        List<Jump> Jumps { get; set; }
+        public List<Jump> Jumps { get; set; }
 
         public JumpList(List<Jump> jumps)
         {
             Jumps = jumps;
+        }
+
+        public JumpList(JumpListDTO dto)
+        {
+            Jumps = dto.Jumps;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
 using Logbook.Models;
-using Logbook.Models.Lists;
 using Logbook.PresentationLayer.DTO;
 using Logbook.ServiceLayer.Interfaces;
 
@@ -17,47 +16,34 @@ namespace Logbook.ServiceLayer.Services
 
         public void AddWeather(WeatherDTO dto)
         {
-            _weatherDAO.AddWeather(ConvertDTOToModel(dto)); 
+            Weather weather = new Weather(dto);
+            _weatherDAO.AddWeather(weather); 
         }
 
-        public Weather GetWeatherById(int weatherId)
+        public WeatherDTO GetWeatherById(int weatherId)
         {
-            return _weatherDAO.GetWeatherById(weatherId);   
+            return new WeatherDTO(_weatherDAO.GetWeatherById(weatherId));   
         }
 
-        public WeatherList GetWeatherList()
+        public WeatherListDTO GetWeatherList()
         {
-            return _weatherDAO.GetWeatherList();
+            return new WeatherListDTO(_weatherDAO.GetWeatherList());
         }
 
-        public WeatherList GetWeatherListByUserId(int userId)
+        public WeatherListDTO GetWeatherListByUserId(int userId)
         {
-            return _weatherDAO.GetWeatherListByUserId(userId);
+            return new WeatherListDTO(_weatherDAO.GetWeatherListByUserId(userId));
         }
 
         public void UpdateWeather(WeatherDTO dto)
         {
-            _weatherDAO.UpdateWeather(ConvertDTOToModel(dto));
+            Weather weather = new Weather(dto);
+            _weatherDAO.UpdateWeather(weather);
         }
 
         public void DeleteWeather(int weatherId)
         {
             _weatherDAO.DeleteWeather(weatherId);
-        }
-        private Weather ConvertDTOToModel(WeatherDTO dto)
-        {
-            Weather weather = new Weather(); 
-            if(weather.WeatherId != 0)
-            {
-                weather.WeatherId = dto.WeatherId;
-            }
-            weather.GroundTemperature = dto.GroundTemperature;
-            weather.GroundWindSpeed = dto.GroundWindSpeed;
-            weather.GroundWindDirectionAtTakeoff = dto.GroundWindDirectionAtTakeoff;
-            weather.GroundWindDirectionAtLanding = dto.GroundWindDirectionAtLanding;
-            weather.TemperatureAtJumpAltitude = dto.TemperatureAtJumpAltitude;
-            weather.Notes = dto.Notes;
-            return weather;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Logbook.PresentationLayer.DTO
+﻿using Logbook.Models;
+
+namespace Logbook.PresentationLayer.DTO
 {
     public class JumpDTO
     {
@@ -16,19 +18,26 @@
        public string Notes { get; set; }
        public int TotalJumpers { get; set; }
 
-       /* public JumpDTO(int userId, int weatherId, int aircraftId, int equipmentId, int dropzoneId, int jumpNumber, DateTime jumpDate, string jumpType, int exitAltitude, string landingPattern, string notes, int totalJumpers)
+       public JumpDTO()
+       {
+
+       }
+
+        public JumpDTO(Jump jump)
         {
-            UserId = userId;
-            WeatherId = weatherId;
-            EquipmentId = equipmentId;
-            DropzoneId = dropzoneId;
-            JumpNumber = jumpNumber;
-            JumpDate = jumpDate;
-            JumpType = jumpType;
-            ExitAltitude = exitAltitude;
-            LandingPattern = landingPattern;
-            Notes = notes;
-            TotalJumpers = totalJumpers;
-        }*/
+            JumpId = jump.JumpId;
+            UserId = jump.UserId;
+            WeatherId = jump.WeatherId;
+            AircraftId = jump.AircraftId;
+            EquipmentId = jump.EquipmentId;
+            DropzoneId = jump.DropzoneId;
+            JumpNumber = jump.JumpNumber;
+            JumpDate = jump.JumpDate;
+            JumpType = jump.JumpType;
+            ExitAltitude = jump.ExitAltitude;
+            LandingPattern = jump.LandingPattern;
+            Notes = jump.Notes;
+            TotalJumpers = jump.TotalJumpers;
+        }
     }
 }

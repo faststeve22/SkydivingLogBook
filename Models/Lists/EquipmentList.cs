@@ -1,4 +1,6 @@
-﻿namespace Logbook.Models.Lists
+﻿using Logbook.PresentationLayer.DTO;
+
+namespace Logbook.Models.Lists
 {
     public class EquipmentList
     {
@@ -6,6 +8,11 @@
         public EquipmentList(List<Equipment> equipment)
         {
             Equipment = equipment;
+        }
+
+        public EquipmentList(EquipmentListDTO dto)
+        {
+            Equipment = dto._equipmentList;
         }
     }
 }

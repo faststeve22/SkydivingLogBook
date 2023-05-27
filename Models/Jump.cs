@@ -1,4 +1,7 @@
-﻿namespace Logbook.Models
+﻿using Logbook.PresentationLayer.DTO;
+using Microsoft.AspNetCore.Components;
+
+namespace Logbook.Models
 {
     public class Jump
     {
@@ -20,20 +23,22 @@
         {
 
         }
-        public Jump(int jumpId, int userId, int weatherId, int aircraftId, int equipmentId, int dropzoneId, int jumpNumber, DateTime jumpDate, string jumpType, int exitAltitude, string landingPattern, string notes, int totalJumpers)
+        
+        public Jump(JumpDTO dto)
         {
-            JumpId = jumpId;
-            UserId = userId;
-            WeatherId = weatherId;
-            EquipmentId = equipmentId;
-            DropzoneId = dropzoneId;
-            JumpNumber = jumpNumber;
-            JumpDate = jumpDate;
-            JumpType = jumpType;
-            ExitAltitude = exitAltitude;
-            LandingPattern = landingPattern;
-            Notes = notes;
-            TotalJumpers = totalJumpers;
+            JumpId = dto.JumpId;
+            UserId = dto.UserId;
+            WeatherId = dto.WeatherId;
+            AircraftId = dto.AircraftId;
+            EquipmentId = dto.EquipmentId;
+            DropzoneId = dto.DropzoneId;
+            JumpNumber = dto.JumpNumber;
+            JumpDate = dto.JumpDate;
+            JumpType = dto.JumpType;
+            ExitAltitude = dto.ExitAltitude;
+            LandingPattern = dto.LandingPattern;
+            Notes = dto.Notes;
+            TotalJumpers = dto.TotalJumpers;
         }
     }
 }

@@ -22,24 +22,27 @@ namespace Logbook.PresentationLayer.Controllers
         }
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        public AircraftDTO GetAircraftById(int id)
         {
-            return "value";
+            return _aircraftService.GetAircraftById(id);
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] AircraftDTO aircraftDTO)
         {
+            _aircraftService.AddAircraft(aircraftDTO);
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put([FromBody] AircraftDTO aircraftDTO)
         {
+            _aircraftService.UpdateAircraft(aircraftDTO);
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(int aircraftId)
         {
+            _aircraftService.DeleteAircraft(aircraftId);
         }
     }
 }

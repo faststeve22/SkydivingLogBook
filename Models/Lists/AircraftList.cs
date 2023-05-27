@@ -1,4 +1,6 @@
-﻿namespace Logbook.Models.Lists
+﻿using Logbook.PresentationLayer.DTO;
+
+namespace Logbook.Models.Lists
 {
     public class AircraftList
     {
@@ -7,6 +9,11 @@
         public AircraftList(List<Aircraft> aircraft)
         {
             Aircraft = aircraft;
+        }
+        
+        public AircraftList(AircraftListDTO dto)
+        {
+            Aircraft = dto.Aircraft;
         }
     }
 }
