@@ -8,10 +8,12 @@ namespace Logbook.ServiceLayer.Services
     public class EquipmentService : IEquipmentService
     {
         private readonly IEquipmentDAO _equipmentDAO;
+        private readonly IUserService _userService;
 
-        public EquipmentService(IEquipmentDAO equipmentDAO)
+        public EquipmentService(IEquipmentDAO equipmentDAO, IUserService userService)
         {
             _equipmentDAO = equipmentDAO;
+            _userService = userService;
         }
 
         public void AddEquipment(EquipmentDTO dto)
@@ -30,9 +32,10 @@ namespace Logbook.ServiceLayer.Services
             return new EquipmentListDTO(_equipmentDAO.GetEquipmentList());
         }
 
-        public EquipmentListDTO GetEquipmentListByUserId(int userId)
+        public EquipmentListDTO GetEquipmentListByUserId()
         {
-            return new EquipmentListDTO(_equipmentDAO.GetEquipmentListByUserId(userId));
+            
+            return new EquipmentListDTO(_equipmentDAO.GetEquipmentListByUserId(_userService.GetUserId()));
         }
 
         public void UpdateEquipment(EquipmentDTO dto)
@@ -46,9 +49,9 @@ namespace Logbook.ServiceLayer.Services
             _equipmentDAO.DeleteEquipment(equipmentId);
         }
 
-        public void DeleteEquipmentByUserId(int userId)
+        public void DeleteEquipmentByUserId()
         {
-            _equipmentDAO.DeleteEquipmentByUserId(userId);
+            _equipmentDAO.DeleteEquipmentByUserId(_userService.GetUserId());
         }
         
     }

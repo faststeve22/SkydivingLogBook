@@ -10,7 +10,7 @@ namespace Logbook.ServiceLayer.Interfaces
 
         public JumpListDTO GetJumps();
 
-        public JumpListDTO GetJumpsByUserId(int userId);
+        public JumpListDTO GetJumpsByUserId();
 
         public void UpdateJump(JumpDTO dto);
         public void DeleteJump(int jumpId);

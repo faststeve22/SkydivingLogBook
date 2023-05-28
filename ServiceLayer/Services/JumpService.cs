@@ -8,9 +8,11 @@ namespace Logbook.ServiceLayer.Services
     public class JumpService : IJumpService
     {
         private readonly IJumpDAO _jumpDAO;
-        public JumpService(IJumpDAO jumpDAO)
+        private readonly IUserService _userService;
+        public JumpService(IJumpDAO jumpDAO, IUserService userService)
         {
             _jumpDAO = jumpDAO;
+            _userService = userService;
         }
 
         public void AddJump(JumpDTO jumpDTO)
@@ -28,7 +30,7 @@ namespace Logbook.ServiceLayer.Services
             return new JumpListDTO(_jumpDAO.GetJumps());
         }
 
-        public JumpListDTO GetJumpsByUserId(int userId)
+        public JumpListDTO GetJumpsByUserId()
         {
             return new JumpListDTO(_jumpDAO.GetJumpsByUserId(userId));
         }

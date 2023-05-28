@@ -6,7 +6,7 @@ namespace Logbook.ServiceLayer.Interfaces
     {
         public DropzoneDTO GetDropzoneById(int dropzoneId);
         public DropzoneListDTO GetDropzoneList();
-        public DropzoneListDTO GetDropzoneListByUserId(int userId);
+        public DropzoneListDTO GetDropzoneListByUserId();
         public void AddDropzone(DropzoneDTO dto);
         public void UpdateDropzone(DropzoneDTO dto);
 

@@ -2,17 +2,18 @@
 using Logbook.Models;
 using Logbook.PresentationLayer.DTO;
 using Logbook.ServiceLayer.Interfaces;
-using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace Logbook.ServiceLayer.Services
 {
     public class WeatherService : IWeatherService
     {
         private readonly IWeatherDAO _weatherDAO;
+        private readonly IUserService _userService;
 
-        public WeatherService(IWeatherDAO weatherDAO)
+        public WeatherService(IWeatherDAO weatherDAO, IUserService userService)
         {
             _weatherDAO = weatherDAO;
+            _userService = userService;
         }
 
         public void AddWeather(WeatherDTO dto)
@@ -31,9 +32,9 @@ namespace Logbook.ServiceLayer.Services
             return new WeatherListDTO(_weatherDAO.GetWeatherList());
         }
 
-        public WeatherListDTO GetWeatherListByUserId(int userId)
+        public WeatherListDTO GetWeatherListByUserId()
         {
-            return new WeatherListDTO(_weatherDAO.GetWeatherListByUserId(userId));
+            return new WeatherListDTO(_weatherDAO.GetWeatherListByUserId(_userService.GetUserId()));
         }
 
         public void UpdateWeather(WeatherDTO dto)

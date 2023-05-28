@@ -25,40 +25,40 @@ namespace Logbook.ServiceLayer.Services
 
         public JumpLogDTO GetUserJumpLog()
         {
-            int userId = _userService.GetUserId();
-            JumpLog jumpLog = new JumpLog(GetJumpsByUserId(userId), GetAircraftByUserId(userId), GetDropzonesByUserId(userId), GetEquipmentByUserId(userId), GetWeatherListByUserId(userId));
+            JumpLog jumpLog = new JumpLog(GetJumpsByUserId(), GetAircraftByUserId(), GetDropzonesByUserId(), GetEquipmentByUserId(), GetWeatherListByUserId());
             return new JumpLogDTO(jumpLog);
         }
 
-        public void DeleteJumpLog(int userId)
+        public void DeleteJumpLog()
         {
+            int userId = _userService.GetUserId();
             _equipmentService.DeleteEquipmentByUserId(userId);
             _weatherService.DeleteWeatherByUserId(userId);
             _jumpService.DeleteJumpsByUserId(userId);
         }
 
-        private JumpList GetJumpsByUserId(int userId)
+        private JumpList GetJumpsByUserId()
         {
-            return new JumpList(_jumpService.GetJumpsByUserId(userId));
+            return new JumpList(_jumpService.GetJumpsByUserId());
         }
 
-        private AircraftList GetAircraftByUserId(int userId)
+        private AircraftList GetAircraftByUserId()
         {
-            return new AircraftList(_aircraftService.GetAircraftListByUserId(userId));
+            return new AircraftList(_aircraftService.GetAircraftListByUserId());
         }
 
-        private DropzoneList GetDropzonesByUserId(int userId)
+        private DropzoneList GetDropzonesByUserId()
         {
-            return new DropzoneList(_dropzoneService.GetDropzoneListByUserId(userId));
+            return new DropzoneList(_dropzoneService.GetDropzoneListByUserId());
         }
 
-        private EquipmentList GetEquipmentByUserId(int userId)
+        private EquipmentList GetEquipmentByUserId()
         {
-            return new EquipmentList(_equipmentService.GetEquipmentListByUserId(userId));
+            return new EquipmentList(_equipmentService.GetEquipmentListByUserId());
         }
-        private WeatherList GetWeatherListByUserId(int userId)
+        private WeatherList GetWeatherListByUserId()
         {
-            return new WeatherList(_weatherService.GetWeatherListByUserId(userId));
+            return new WeatherList(_weatherService.GetWeatherListByUserId());
         }
     }
 }

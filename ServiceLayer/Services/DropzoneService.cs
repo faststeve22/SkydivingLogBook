@@ -8,10 +8,12 @@ namespace Logbook.ServiceLayer.Services
     public class DropzoneService : IDropzoneService
     {
         private readonly IDropzoneDAO _dropzoneDAO;
+        private readonly IUserService _userService;
 
-        public DropzoneService(IDropzoneDAO dropzoneDAO)
+        public DropzoneService(IDropzoneDAO dropzoneDAO, IUserService userService)
         {
             _dropzoneDAO = dropzoneDAO;
+            _userService = userService;
         }
 
         public DropzoneDTO GetDropzoneById(int dropzoneId)
@@ -24,9 +26,9 @@ namespace Logbook.ServiceLayer.Services
             return new DropzoneListDTO(_dropzoneDAO.GetDropzoneList());
         }
 
-        public DropzoneListDTO GetDropzoneListByUserId(int userId)
+        public DropzoneListDTO GetDropzoneListByUserId()
         {
-            return new DropzoneListDTO(_dropzoneDAO.GetDropzoneListByUserId(userId));
+            return new DropzoneListDTO(_dropzoneDAO.GetDropzoneListByUserId(_userService.GetUserId()));
         }
 
         public void AddDropzone(DropzoneDTO dto)

@@ -6,7 +6,7 @@ namespace Logbook.ServiceLayer.Interfaces
     {
         public AircraftDTO GetAircraftById(int aircraftId);
         public AircraftListDTO GetAircraftList();
-        public AircraftListDTO GetAircraftListByUserId(int userId);
+        public AircraftListDTO GetAircraftListByUserId();
 
 
         public void AddAircraft(AircraftDTO aircraftDTO);

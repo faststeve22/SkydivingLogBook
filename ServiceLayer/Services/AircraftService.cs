@@ -8,9 +8,11 @@ namespace Logbook.ServiceLayer.Services
     public class AircraftService : IAircraftService
     {
         private readonly IAircraftDAO _aircraftDAO;
-        public AircraftService(IAircraftDAO aircraftDAO)
+        private readonly IUserService _userService;
+        public AircraftService(IAircraftDAO aircraftDAO, IUserService userService)
         {
             _aircraftDAO = aircraftDAO;
+            _userService = userService;
         }
 
         public AircraftDTO GetAircraftById(int aircraftId)
@@ -25,7 +27,7 @@ namespace Logbook.ServiceLayer.Services
 
         public AircraftListDTO GetAircraftListByUserId(int userId)
         {
-            return new AircraftListDTO(_aircraftDAO.GetAircraftListByUserId(userId));
+            return new AircraftListDTO(_aircraftDAO.GetAircraftListByUserId(_userService.GetUserId()));
         }
         public void AddAircraft(AircraftDTO aircraftDTO)
         {

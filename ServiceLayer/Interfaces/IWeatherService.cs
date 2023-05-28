@@ -7,7 +7,7 @@ namespace Logbook.ServiceLayer.Interfaces
         public void AddWeather(WeatherDTO dto);
         public WeatherDTO GetWeatherById(int weatherId);
         public WeatherListDTO GetWeatherList();
-        public WeatherListDTO GetWeatherListByUserId(int userId);
+        public WeatherListDTO GetWeatherListByUserId();
         public void UpdateWeather(WeatherDTO dto);
         public void DeleteWeather(int weatherId);
         public void DeleteWeatherByUserId(int weatherId);
