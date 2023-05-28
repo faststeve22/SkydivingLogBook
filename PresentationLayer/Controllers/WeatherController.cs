@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Logbook.PresentationLayer.DTO;
+using Logbook.ServiceLayer.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -8,36 +10,46 @@ namespace Logbook.PresentationLayer.Controllers
     [ApiController]
     public class WeatherController : ControllerBase
     {
-        [Authorize]
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IWeatherService _weatherService;
+
+        public WeatherController(IWeatherService weatherService)
         {
-            return new string[] { "value1", "value2" };
+            _weatherService = weatherService;
         }
 
         [Authorize]
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        public WeatherListDTO Get()
         {
-            return "value";
+            return _weatherService.GetWeatherList();
+        }
+
+        [Authorize]
+        [HttpGet("{WeatherId}")]
+        public WeatherDTO Get(int id)
+        {
+            return _weatherService.GetWeatherById(id);
         }
 
         [Authorize]
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] WeatherDTO dto)
         {
+            _weatherService.AddWeather(dto);
         }
 
         [Authorize]
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{WeatherId}")]
+        public void Put([FromBody] WeatherDTO dto)
         {
+            _weatherService.UpdateWeather(dto);
         }
 
         [Authorize]
-        [HttpDelete("{id}")]
+        [HttpDelete("{WeatherId}")]
         public void Delete(int id)
         {
+            _weatherService.DeleteWeather(id);
         }
     }
 }

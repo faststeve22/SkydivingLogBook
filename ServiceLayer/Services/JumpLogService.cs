@@ -32,9 +32,9 @@ namespace Logbook.ServiceLayer.Services
         public void DeleteJumpLog()
         {
             int userId = _userService.GetUserId();
-            _equipmentService.DeleteEquipmentByUserId(userId);
-            _weatherService.DeleteWeatherByUserId(userId);
-            _jumpService.DeleteJumpsByUserId(userId);
+            _equipmentService.DeleteEquipmentByUserId();
+            _weatherService.DeleteWeatherByUserId();
+            _jumpService.DeleteJumpsByUserId();
         }
 
         private JumpList GetJumpsByUserId()

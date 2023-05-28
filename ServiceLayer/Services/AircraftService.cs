@@ -25,7 +25,7 @@ namespace Logbook.ServiceLayer.Services
             return new AircraftListDTO(_aircraftDAO.GetAircraftList());
         }
 
-        public AircraftListDTO GetAircraftListByUserId(int userId)
+        public AircraftListDTO GetAircraftListByUserId()
         {
             return new AircraftListDTO(_aircraftDAO.GetAircraftListByUserId(_userService.GetUserId()));
         }

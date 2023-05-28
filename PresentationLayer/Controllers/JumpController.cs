@@ -19,7 +19,7 @@ namespace Logbook.PresentationLayer.Controllers
         }
 
         [Authorize]
-        [HttpGet("{id}")]
+        [HttpGet("{JumpId}")]
         public JumpDTO Get(int jumpId)
         {
             return _jumpService.GetJumpById(jumpId);
@@ -40,7 +40,7 @@ namespace Logbook.PresentationLayer.Controllers
         }
 
         [Authorize]
-        [HttpDelete("{id}")]
+        [HttpDelete("{JumpId}")]
         public void Delete(int jumpId)
         {
             _jumpService.DeleteJump(jumpId);

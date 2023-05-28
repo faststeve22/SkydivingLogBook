@@ -17,17 +17,17 @@ namespace Logbook.PresentationLayer.Controllers
         }
 
         [Authorize]
-        [HttpGet("/jumplog")]
+        [HttpGet]
         public JumpLogDTO GetJumpLog()
         {
             return _jumpLogService.GetUserJumpLog();
         }
 
         [Authorize]
-        [HttpDelete("{id}")]
-        public void Delete(int userId)
+        [HttpDelete]
+        public void Delete()
         {
-            _jumpLogService.DeleteJumpLog(userId);
+            _jumpLogService.DeleteJumpLog();
         }
     }
 }

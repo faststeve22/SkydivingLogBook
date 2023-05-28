@@ -14,7 +14,7 @@ namespace Logbook.ServiceLayer.Interfaces
 
         public void UpdateJump(JumpDTO dto);
         public void DeleteJump(int jumpId);
-        public void DeleteJumpsByUserId(int userId);
+        public void DeleteJumpsByUserId();
 
     }
 }

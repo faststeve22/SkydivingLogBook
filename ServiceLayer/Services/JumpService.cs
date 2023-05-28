@@ -32,7 +32,7 @@ namespace Logbook.ServiceLayer.Services
 
         public JumpListDTO GetJumpsByUserId()
         {
-            return new JumpListDTO(_jumpDAO.GetJumpsByUserId(userId));
+            return new JumpListDTO(_jumpDAO.GetJumpsByUserId(_userService.GetUserId()));
         }
 
         public void UpdateJump(JumpDTO jumpDTO)
@@ -46,9 +46,9 @@ namespace Logbook.ServiceLayer.Services
             _jumpDAO.DeleteJump(jumpId);
         }
 
-        public void DeleteJumpsByUserId(int userId)
+        public void DeleteJumpsByUserId()
         {
-            _jumpDAO.DeleteJumpsByUserId(userId);
+            _jumpDAO.DeleteJumpsByUserId(_userService.GetUserId());
         }
     }
 }

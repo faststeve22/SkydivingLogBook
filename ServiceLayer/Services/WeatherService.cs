@@ -48,9 +48,9 @@ namespace Logbook.ServiceLayer.Services
             _weatherDAO.DeleteWeather(weatherId);
         }
 
-        public void DeleteWeatherByUserId(int userId)
+        public void DeleteWeatherByUserId()
         {
-            _weatherDAO.DeleteWeatherByUserId(userId);
+            _weatherDAO.DeleteWeatherByUserId(_userService.GetUserId());
         }
     }
 }

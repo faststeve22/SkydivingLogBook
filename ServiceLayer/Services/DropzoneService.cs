@@ -47,5 +47,6 @@ namespace Logbook.ServiceLayer.Services
         {
             _dropzoneDAO.DeleteDropzone(dropzoneId);
         }
+
     }
 }

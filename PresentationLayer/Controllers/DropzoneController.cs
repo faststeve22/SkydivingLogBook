@@ -39,14 +39,14 @@ namespace Logbook.PresentationLayer.Controllers
         }
 
         [Authorize]
-        [HttpPut("{id}")]
+        [HttpPut("{DropzoneId}")]
         public void Put([FromBody] DropzoneDTO dto)
         {
             _dropzoneService.UpdateDropzone(dto);
         }
 
         [Authorize]
-        [HttpDelete("{id}")]
+        [HttpDelete("{DropzoneId}")]
         public void Delete(int id)
         {
             _dropzoneService.DeleteDropzone(id);
