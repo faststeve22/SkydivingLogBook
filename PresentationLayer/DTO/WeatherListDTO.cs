@@ -14,7 +14,7 @@ namespace Logbook.PresentationLayer.DTO
 
         public WeatherListDTO(WeatherList list)
         {
-            weatherList = list.Weather;
+            weatherList = list._weather;
         }
     }
 }

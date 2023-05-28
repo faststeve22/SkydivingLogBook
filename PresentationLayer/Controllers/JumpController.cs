@@ -19,7 +19,7 @@ namespace Logbook.PresentationLayer.Controllers
         }
 
         [Authorize]
-        [HttpGet("{JumpId}")]
+        [HttpGet("{jumpId}")]
         public JumpDTO Get(int jumpId)
         {
             return _jumpService.GetJumpById(jumpId);

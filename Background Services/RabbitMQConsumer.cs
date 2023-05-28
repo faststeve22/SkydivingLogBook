@@ -4,6 +4,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Logbook.Models;
 using Logbook.DataAccessLayer.Interfaces;
+using Logbook.PresentationLayer.DTO;
 
 namespace Logbook.Background_Services
 {
@@ -38,7 +39,7 @@ namespace Logbook.Background_Services
                     var body = ea.Body.ToArray();
                     var message = Encoding.UTF8.GetString(body);
                     var userInfo = JsonConvert.DeserializeObject<Jumper>(message);
-                    Jumper user = new Jumper();
+                    UserDTO user = new UserDTO();
                     user.UserId = userInfo.UserId;
                     user.Username = userInfo.Username;
                     user.FirstName = userInfo.FirstName;

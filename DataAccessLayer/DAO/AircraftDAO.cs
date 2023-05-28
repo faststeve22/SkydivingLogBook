@@ -1,6 +1,6 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
 using Logbook.Models;
-using Logbook.Models.Lists;
+using Logbook.PresentationLayer.DTO;
 using System.Data;
 
 namespace Logbook.DataAccessLayer.DAO
@@ -13,65 +13,65 @@ namespace Logbook.DataAccessLayer.DAO
             _connectionFactory = connectionFactory;
         }
 
-        public void AddAircraft(Aircraft aircraft)
+        public void AddAircraft(AircraftDTO dto)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "INSERT INTO Aircraft (aircraft_id, aircraft_name) VALUES (@aircraftId, @aircraftName)";
-                AddParameter(cmd, "@aircraftName", aircraft.AircraftName);
+                AddParameter(cmd, "@aircraftName", dto.AircraftName);
                 cmd.ExecuteNonQuery();
             }
         }
 
-        public Aircraft GetAircraftById(int aircraftId)
+        public AircraftDTO GetAircraftById(int aircraftId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "SELET aircraft_id, aircraft_name FROM Aircraft WHERE aircraft_id = @aircraftId";
+                cmd.CommandText = "SELECT aircraft_id, aircraft_name FROM Aircraft WHERE aircraft_id = @aircraftId";
                 AddParameter(cmd, "@aircraftId", aircraftId);
                 IDataReader reader = cmd.ExecuteReader();
-                return AircraftReader(reader)[0];
+                return new AircraftDTO(AircraftReader(reader).Aircraft[0]);
             }
         }
 
-        public AircraftList GetAircraftList()
+        public AircraftListDTO GetAircraftList()
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "SELET aircraft_id, aircraft_name FROM Aircraft";
+                cmd.CommandText = "SELECT aircraft_id, aircraft_name FROM Aircraft";
                 IDataReader reader = cmd.ExecuteReader();
-                return new AircraftList(AircraftReader(reader));
+                return AircraftReader(reader);
             }
         }
 
-        public AircraftList GetAircraftListByUserId(int userId)
+        public AircraftListDTO GetAircraftListByUserId(int userId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "SELET aircraft_id, aircraft_name FROM Aircraft JOIN Jump ON Jump.aircraft_id = Aircraft.aircraft_id WHERE Jump.user_id = @userId";
+                cmd.CommandText = "SELECT Aircraft.aircraft_id, aircraft_name FROM Aircraft JOIN Jump ON Jump.aircraft_id = Aircraft.aircraft_id WHERE Jump.user_id = @userId";
                 AddParameter(cmd, "@userId", userId);
                 IDataReader reader = cmd.ExecuteReader();
-                return new AircraftList(AircraftReader(reader));
+                return AircraftReader(reader);
             }
         }
 
-        public void UpdateAircraft(Aircraft aircraft)
+        public void UpdateAircraft(AircraftDTO dto)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "UPDATE Aircraft SET aircraft_name = @aircraftName WHERE aircraft_id = @aircraftId";
-                AddParameter(cmd, "@aircraftId", aircraft.AircraftId);
-                AddParameter(cmd, "@aircraftName", aircraft.AircraftName);
+                AddParameter(cmd, "@aircraftId", dto.AircraftId);
+                AddParameter(cmd, "@aircraftName", dto.AircraftName);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -88,17 +88,17 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        private List<Aircraft> AircraftReader(IDataReader reader)
+        private AircraftListDTO AircraftReader(IDataReader reader)
         {
-            List<Aircraft> AircraftList = new List<Aircraft>();
+            AircraftListDTO dto = new AircraftListDTO();
             while(reader.Read())
             {
                 Aircraft aircraft = new Aircraft();
                 aircraft.AircraftId = Convert.ToInt32(reader["aircraft_id"]);
                 aircraft.AircraftName = Convert.ToString(reader["aircraft_name"]);
-                AircraftList.Add(aircraft);
+                dto.Aircraft.Add(aircraft);
             }
-            return AircraftList;
+            return dto;
         }
 
         private void AddParameter(IDbCommand cmd, string parameterName, object value)

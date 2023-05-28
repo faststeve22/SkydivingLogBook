@@ -1,17 +1,16 @@
-﻿using Logbook.Models;
-using Logbook.Models.Lists;
+﻿using Logbook.PresentationLayer.DTO;
 
 namespace Logbook.DataAccessLayer.Interfaces
 {
     public interface IEquipmentDAO
     {
-        public void AddEquipment(Equipment equipment);
-        public Equipment GetEquipmentById(int equipmentId);
-        public EquipmentList GetEquipmentList();
-        public EquipmentList GetEquipmentListByUserId(int userId);
-        public void UpdateEquipment(Equipment equipment);
-        public void DeleteEquipment(int equipmentId);
-        public void DeleteEquipmentByUserId(int userId);
+        void AddEquipment(EquipmentDTO dto);
+        EquipmentDTO GetEquipmentById(int equipmentId);
+        EquipmentListDTO GetEquipmentList();
+        EquipmentListDTO GetEquipmentListByUserId(int userId);
+        void UpdateEquipment(EquipmentDTO dto);
+        void DeleteEquipment(int equipmentId);
+        void DeleteEquipmentByUserId(int userId);
 
     }
 }

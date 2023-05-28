@@ -1,17 +1,16 @@
-﻿using Logbook.Models;
-using Logbook.Models.Lists;
+﻿using Logbook.PresentationLayer.DTO;
 
 namespace Logbook.DataAccessLayer.Interfaces
 {
     public interface IWeatherDAO
     {
-        public void AddWeather(Weather weather);
-        public Weather GetWeatherById(int weatherId);
-        public WeatherList GetWeatherList();
-        public WeatherList GetWeatherListByUserId(int userId);
-        public void UpdateWeather(Weather weather);
-        public void DeleteWeather(int weatherId);
-        public void DeleteWeatherByUserId(int userId);
+        void AddWeather(WeatherDTO dto);
+        WeatherDTO GetWeatherById(int weatherId);
+        WeatherListDTO GetWeatherList();
+        WeatherListDTO GetWeatherListByUserId(int userId);
+        void UpdateWeather(WeatherDTO dto);
+        void DeleteWeather(int weatherId);
+        void DeleteWeatherByUserId(int userId);
 
     }
 }

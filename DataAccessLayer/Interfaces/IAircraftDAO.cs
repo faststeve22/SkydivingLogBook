@@ -1,16 +1,15 @@
-﻿using Logbook.Models;
-using Logbook.Models.Lists;
+﻿using Logbook.PresentationLayer.DTO;
 
 namespace Logbook.DataAccessLayer.Interfaces
 {
     public interface IAircraftDAO
     {
-        public void AddAircraft(Aircraft aircraft);
-        public AircraftList GetAircraftList();
-        public Aircraft GetAircraftById(int aircraftId);
-        public AircraftList GetAircraftListByUserId(int userId);
-        public void UpdateAircraft(Aircraft aircraft);
-        public void DeleteAircraft(int aircraftId);
+        void AddAircraft(AircraftDTO dto);
+        AircraftListDTO GetAircraftList();
+        AircraftDTO GetAircraftById(int aircraftId);
+        AircraftListDTO GetAircraftListByUserId(int userId);
+        void UpdateAircraft(AircraftDTO dto);
+        void DeleteAircraft(int aircraftId);
 
     }
 }

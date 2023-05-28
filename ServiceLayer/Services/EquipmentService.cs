@@ -18,30 +18,28 @@ namespace Logbook.ServiceLayer.Services
 
         public void AddEquipment(EquipmentDTO dto)
         {
-            Equipment equipment = new Equipment(dto);
-            _equipmentDAO.AddEquipment(equipment);
+            _equipmentDAO.AddEquipment(dto);
         }
 
         public EquipmentDTO GetEquipmentById(int equipmentId)
         {
-            return new EquipmentDTO(_equipmentDAO.GetEquipmentById(equipmentId));
+            return _equipmentDAO.GetEquipmentById(equipmentId);
         }
 
         public EquipmentListDTO GetEquipmentList()
         {
-            return new EquipmentListDTO(_equipmentDAO.GetEquipmentList());
+            return _equipmentDAO.GetEquipmentList();
         }
 
         public EquipmentListDTO GetEquipmentListByUserId()
         {
             
-            return new EquipmentListDTO(_equipmentDAO.GetEquipmentListByUserId(_userService.GetUserId()));
+            return _equipmentDAO.GetEquipmentListByUserId(_userService.GetUserId());
         }
 
         public void UpdateEquipment(EquipmentDTO dto)
         {
-            Equipment equipment = new Equipment(dto);
-            _equipmentDAO.UpdateEquipment(equipment);
+            _equipmentDAO.UpdateEquipment(dto);
         }
 
         public void DeleteEquipment(int equipmentId)

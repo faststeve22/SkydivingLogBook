@@ -1,5 +1,4 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
-using Logbook.Models;
 using Logbook.PresentationLayer.DTO;
 using Logbook.ServiceLayer.Interfaces;
 
@@ -18,29 +17,27 @@ namespace Logbook.ServiceLayer.Services
 
         public void AddWeather(WeatherDTO dto)
         {
-            Weather weather = new Weather(dto);
-            _weatherDAO.AddWeather(weather); 
+            _weatherDAO.AddWeather(dto); 
         }
 
         public WeatherDTO GetWeatherById(int weatherId)
         {
-            return new WeatherDTO(_weatherDAO.GetWeatherById(weatherId));   
+            return _weatherDAO.GetWeatherById(weatherId);   
         }
 
         public WeatherListDTO GetWeatherList()
         {
-            return new WeatherListDTO(_weatherDAO.GetWeatherList());
+            return _weatherDAO.GetWeatherList();
         }
 
         public WeatherListDTO GetWeatherListByUserId()
         {
-            return new WeatherListDTO(_weatherDAO.GetWeatherListByUserId(_userService.GetUserId()));
+            return _weatherDAO.GetWeatherListByUserId(_userService.GetUserId());
         }
 
         public void UpdateWeather(WeatherDTO dto)
         {
-            Weather weather = new Weather(dto);
-            _weatherDAO.UpdateWeather(weather);
+            _weatherDAO.UpdateWeather(dto);
         }
 
         public void DeleteWeather(int weatherId)

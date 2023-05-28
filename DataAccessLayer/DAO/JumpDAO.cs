@@ -1,6 +1,6 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
 using Logbook.Models;
-using Logbook.Models.Lists;
+using Logbook.PresentationLayer.DTO;
 using System.Data;
 
 namespace Logbook.DataAccessLayer.DAO
@@ -12,30 +12,38 @@ namespace Logbook.DataAccessLayer.DAO
         {
             _connectionFactory = connectionFactory;
         }
-        public void AddJump(Jump jump)
+        public void AddJump(JumpDTO dto)
         {
+            Type type = typeof(JumpDTO);
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "INSERT jump_id, user_id, weather_id, aircraft_id, equipment_id, dropzone_id, jump_number, jump_date, jump_type, exit_altitude, landing_pattern, notes, total_jumpers INTO Jump";
-                AddParameter(cmd, "@userId", jump.UserId);
-                AddParameter(cmd, "@weatherId", jump.WeatherId);
-                AddParameter(cmd, "@aircraftId", jump.AircraftId);
-                AddParameter(cmd, "@equipmentId", jump.EquipmentId);
-                AddParameter(cmd, "@dropzoneId", jump.DropzoneId);
-                AddParameter(cmd, "@jumpNumber", jump.JumpNumber);
-                AddParameter(cmd, "@jumpDate", jump.JumpDate);
-                AddParameter(cmd, "@jumpType", jump.JumpType);
-                AddParameter(cmd, "@exitAltitude", jump.ExitAltitude);
-                AddParameter(cmd, "@landingPattern", jump.LandingPattern);
-                AddParameter(cmd, "@notes", jump.Notes);
-                AddParameter(cmd, "@totalJumpers", jump.TotalJumpers);
-                cmd.ExecuteNonQuery();
+                cmd.CommandText = "INSERT INTO Jump (user_id, weather_id, aircraft_id, equipment_id, dropzone_id, jump_number, jump_date, jump_type, exit_altitude, landing_pattern, notes, total_jumpers) VALUES (@userId, @weatherId, @aircraftId, @equipmentId, @dropzoneId, @jumpNumber, @jumpDate, @jumpType, @exitAltitude, @landingPattern, @notes, @totalJumpers)";
+                foreach(var prop in type.GetProperties())
+                {
+                    if(prop.Name != "JumpId")
+                    {
+                        AddParameter(cmd, prop.Name, prop);
+                    }
+                }
+             /* AddParameter(cmd, "@userId", dto.UserId);
+                AddParameter(cmd, "@weatherId", dto.WeatherId);
+                AddParameter(cmd, "@aircraftId", dto.AircraftId);
+                AddParameter(cmd, "@equipmentId", dto.EquipmentId);
+                AddParameter(cmd, "@dropzoneId", dto.DropzoneId);
+                AddParameter(cmd, "@jumpNumber", dto.JumpNumber);
+                AddParameter(cmd, "@jumpDate", dto.JumpDate);
+                AddParameter(cmd, "@jumpType", dto.JumpType);
+                AddParameter(cmd, "@exitAltitude", dto.ExitAltitude);
+                AddParameter(cmd, "@landingPattern", dto.LandingPattern);
+                AddParameter(cmd, "@notes", dto.Notes);
+                AddParameter(cmd, "@totalJumpers", dto.TotalJumpers);
+                cmd.ExecuteNonQuery(); */
             }
         }
 
-        public Jump GetJumpById(int jumpId)
+        public JumpDTO GetJumpById(int jumpId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
@@ -44,11 +52,11 @@ namespace Logbook.DataAccessLayer.DAO
                 cmd.CommandText = "SELECT jump_id, user_id, weather_id, aircraft_id, equipment_id, dropzone_id, jump_number, jump_date, jump_type, exit_altitude, landing_pattern, notes, total_jumpers FROM Jump WHERE jump_id = @jumpId";
                 AddParameter(cmd, "@jumpId", jumpId);
                 IDataReader reader = cmd.ExecuteReader();
-                return JumpReader(reader)[0];
+                return new JumpDTO(JumpReader(reader).Jumps[0]);
             }
         }
 
-        public JumpList GetJumps()
+        public JumpListDTO GetJumps()
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
@@ -56,10 +64,10 @@ namespace Logbook.DataAccessLayer.DAO
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "SELECT jump_id, user_id, weather_id, aircraft_id, equipment_id, dropzone_id, jump_number, jump_date, jump_type, exit_altitude, landing_pattern, notes, total_jumpers FROM Jump";
                 IDataReader reader = cmd.ExecuteReader();
-                return new JumpList(JumpReader(reader));
+                return JumpReader(reader);
             }
         }
-        public JumpList GetJumpsByUserId(int userId)
+        public JumpListDTO GetJumpsByUserId(int userId)
         {   using (IDbConnection conn = _connectionFactory.CreateConnection()) 
             {
                 conn.Open();
@@ -67,31 +75,37 @@ namespace Logbook.DataAccessLayer.DAO
                 cmd.CommandText = "SELECT jump_id, user_id, weather_id, aircraft_id, equipment_id, dropzone_id, jump_number, jump_date, jump_type, exit_altitude, landing_pattern, notes, total_jumpers FROM Jump WHERE user_id = @userId";
                 AddParameter(cmd, "@userId", userId);
                 IDataReader reader = cmd.ExecuteReader();
-                return new JumpList(JumpReader(reader));
+                return JumpReader(reader);
             }
         }
 
-        public void UpdateJump(Jump jump)
+        public void UpdateJump(JumpDTO dto)
         {
+            Type type = typeof(JumpDTO);
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "UPDATE Jump SET user_id = @userId, weather_id = @weatherId, aircraft_id = @aircraftId, equipment_id = @equipmentId, dropzone_id = @dropzoneId, jump_number = @jumpNumber, jump_date = @jumpDate, jump_type = @jumpType, exit_altitude = @exitAltitude, landing_pattern = @landingPattern, notes = @notes, total_jumpers = @totalJumpers WHERE jump_id = @jumpId";
-                AddParameter(cmd, "@jumpId", jump.JumpId);
-                AddParameter(cmd, "@userId", jump.UserId);
-                AddParameter(cmd, "@weatherId", jump.WeatherId);
-                AddParameter(cmd, "@aircraftId", jump.AircraftId);
-                AddParameter(cmd, "@equipmentId", jump.EquipmentId);
-                AddParameter(cmd, "@dropzoneId", jump.DropzoneId);
-                AddParameter(cmd, "@jumpNumber", jump.JumpNumber);
-                AddParameter(cmd, "@jumpDate", jump.JumpDate);
-                AddParameter(cmd, "@jumpType", jump.JumpType);
-                AddParameter(cmd, "@exitAltitude", jump.ExitAltitude);
-                AddParameter(cmd, "@landingPattern", jump.LandingPattern);
-                AddParameter(cmd, "@notes", jump.Notes);
-                AddParameter(cmd, "@totalJumpers", jump.TotalJumpers);
-                cmd.ExecuteNonQuery();
+                foreach (var prop in type.GetProperties())
+                {
+                   AddParameter(cmd, prop.Name, prop);
+                }
+
+            /*  AddParameter(cmd, "@jumpId", dto.JumpId);
+                AddParameter(cmd, "@userId", dto.UserId);
+                AddParameter(cmd, "@weatherId", dto.WeatherId);
+                AddParameter(cmd, "@aircraftId", dto.AircraftId);
+                AddParameter(cmd, "@equipmentId", dto.EquipmentId);
+                AddParameter(cmd, "@dropzoneId", dto.DropzoneId);
+                AddParameter(cmd, "@jumpNumber", dto.JumpNumber);
+                AddParameter(cmd, "@jumpDate", dto.JumpDate);
+                AddParameter(cmd, "@jumpType", dto.JumpType);
+                AddParameter(cmd, "@exitAltitude", dto.ExitAltitude);
+                AddParameter(cmd, "@landingPattern", dto.LandingPattern);
+                AddParameter(cmd, "@notes", dto.Notes);
+                AddParameter(cmd, "@totalJumpers", dto.TotalJumpers);
+                cmd.ExecuteNonQuery(); */
             }
         }
 
@@ -119,13 +133,11 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        private List<Jump> JumpReader(IDataReader reader)
+        private JumpListDTO JumpReader(IDataReader reader)
         {
-            List<Jump> JumpList = new List<Jump>();
-            while(reader.Read())
-            {
-                Jump jump = new Jump();
-                jump.JumpId = Convert.ToInt32(reader["jump_id"]);
+            return new JumpListDTO(DataMapper.MapDataToList<Jump>(reader));
+            
+             /* jump.JumpId = Convert.ToInt32(reader["jump_id"]);
                 jump.UserId = Convert.ToInt32(reader["user_id"]);
                 jump.WeatherId = Convert.ToInt32(reader["weather_id"]);
                 jump.AircraftId = Convert.ToInt32(reader["aircraft_id"]);
@@ -138,10 +150,7 @@ namespace Logbook.DataAccessLayer.DAO
                 jump.LandingPattern = Convert.ToString(reader["landing_pattern"]);
                 jump.Notes = Convert.ToString(reader["notes"]);
                 jump.TotalJumpers = Convert.ToInt32(reader["total_jumpers"]);
-                JumpList.Add(jump);
-            }
-
-            return JumpList;
+                jumps.Jumps.Add(jump); */
         }
 
         private void AddParameter(IDbCommand cmd, string parameterName, object value)

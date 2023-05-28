@@ -4,21 +4,23 @@ namespace Logbook.Models.Lists
 {
     public class WeatherList
     {
-        public List<Weather> Weather { get; set; }
+        public List<Weather> _weather { get; set; }
 
         public WeatherList()
         {
-          
+            _weather = new List<Weather>();
         }
 
         public WeatherList(WeatherListDTO dto)
         {
-            Weather = dto.weatherList;
+            _weather = new List<Weather>();
+            _weather = dto.weatherList;
+
         }
 
         public void Add(Weather weather)
         {
-            Weather.Add(weather);
+            _weather.Add(weather);
         }
     }
 }

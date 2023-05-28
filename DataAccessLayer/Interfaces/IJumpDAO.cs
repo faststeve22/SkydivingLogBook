@@ -1,17 +1,16 @@
-﻿using Logbook.Models;
-using Logbook.Models.Lists;
+﻿using Logbook.PresentationLayer.DTO;
 
 namespace Logbook.DataAccessLayer.Interfaces
 {
     public interface IJumpDAO
     {
-        public void AddJump(Jump jump);
-        public Jump GetJumpById(int jumpId);
-        public JumpList GetJumps();
-        public JumpList GetJumpsByUserId(int userId);
-        public void UpdateJump(Jump jump);
-        public void DeleteJump(int jumpId);
-        public void DeleteJumpsByUserId(int userId);
+        void AddJump(JumpDTO dto);
+        JumpDTO GetJumpById(int jumpId);
+        JumpListDTO GetJumps();
+        JumpListDTO GetJumpsByUserId(int userId);
+        void UpdateJump(JumpDTO dto);
+        void DeleteJump(int jumpId);
+        void DeleteJumpsByUserId(int userId);
 
     }
 }

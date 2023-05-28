@@ -1,5 +1,4 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
-using Logbook.Models;
 using Logbook.PresentationLayer.DTO;
 using Logbook.ServiceLayer.Interfaces;
 
@@ -18,29 +17,27 @@ namespace Logbook.ServiceLayer.Services
 
         public DropzoneDTO GetDropzoneById(int dropzoneId)
         {
-            return new DropzoneDTO(_dropzoneDAO.GetDropzone(dropzoneId));
+            return _dropzoneDAO.GetDropzone(dropzoneId);
         }
 
         public DropzoneListDTO GetDropzoneList()
         {
-            return new DropzoneListDTO(_dropzoneDAO.GetDropzoneList());
+            return _dropzoneDAO.GetDropzoneList();
         }
 
         public DropzoneListDTO GetDropzoneListByUserId()
         {
-            return new DropzoneListDTO(_dropzoneDAO.GetDropzoneListByUserId(_userService.GetUserId()));
+            return _dropzoneDAO.GetDropzoneListByUserId(_userService.GetUserId());
         }
 
         public void AddDropzone(DropzoneDTO dto)
         {
-            Dropzone dropzone = new Dropzone(dto);
-            _dropzoneDAO.AddDropzone(dropzone);
+            _dropzoneDAO.AddDropzone(dto);
         }
 
         public void UpdateDropzone(DropzoneDTO dto)
         {
-            Dropzone dropzone = new Dropzone(dto);
-            _dropzoneDAO.UpdateDropzone(dropzone);
+            _dropzoneDAO.UpdateDropzone(dto);
         }
 
         public void DeleteDropzone(int dropzoneId)

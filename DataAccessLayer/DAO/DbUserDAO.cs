@@ -1,5 +1,5 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
-using Logbook.Models;
+using Logbook.PresentationLayer.DTO;
 using System.Data;
 
 namespace Logbook.DataAccessLayer.DAO
@@ -13,7 +13,7 @@ namespace Logbook.DataAccessLayer.DAO
             _connectionFactory = connectionFactory;
         }
 
-        public void AddUser(Jumper user)
+        public void AddUser(UserDTO user)
         {
             using(IDbConnection conn = _connectionFactory.CreateConnection())
             {
@@ -25,12 +25,10 @@ namespace Logbook.DataAccessLayer.DAO
                 AddParameter(cmd, "@last_name", user.LastName);
                 AddParameter(cmd, "@email_Address", user.EmailAddress);
                 cmd.ExecuteNonQuery();
-                //User CreatedUser = UserReader(reader);
-                //return CreatedUser;
             }
         }
 
-        public Jumper GetUser(int userId)
+        public UserDTO GetUser(int userId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
@@ -50,7 +48,7 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public void UpdateUser(Jumper user)
+        public void UpdateUser(UserDTO user)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
@@ -77,15 +75,15 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        private Jumper UserReader(IDataReader reader)
+        private UserDTO UserReader(IDataReader reader)
         {
-            Jumper user = new Jumper();
-            user.UserId = Convert.ToInt32(reader["user_id"]);
-            user.Username = Convert.ToString(reader["username"]);
-            user.FirstName = Convert.ToString(reader["first_name"]);
-            user.LastName = Convert.ToString(reader["last_name"]);
-            user.EmailAddress = Convert.ToString(reader["email_address"]);
-            return user;
+            UserDTO dto = new UserDTO();
+            dto.UserId = Convert.ToInt32(reader["user_id"]);
+            dto.Username = Convert.ToString(reader["username"]);
+            dto.FirstName = Convert.ToString(reader["first_name"]);
+            dto.LastName = Convert.ToString(reader["last_name"]);
+            dto.EmailAddress = Convert.ToString(reader["email_address"]);
+            return dto;
         }
 
         private void AddParameter(IDbCommand cmd, string parameterName, object value)

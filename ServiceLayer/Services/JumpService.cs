@@ -1,5 +1,4 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
-using Logbook.Models;
 using Logbook.PresentationLayer.DTO;
 using Logbook.ServiceLayer.Interfaces;
 
@@ -15,30 +14,29 @@ namespace Logbook.ServiceLayer.Services
             _userService = userService;
         }
 
-        public void AddJump(JumpDTO jumpDTO)
+        public void AddJump(JumpDTO dto)
         {
-            Jump jump = new Jump(jumpDTO);
-            _jumpDAO.AddJump(jump);
+            dto.UserId = _userService.GetUserId();
+            _jumpDAO.AddJump(dto);
         }
         public JumpDTO GetJumpById(int jumpId)
         {
-            return new JumpDTO(_jumpDAO.GetJumpById(jumpId));
+            return _jumpDAO.GetJumpById(jumpId);
         }
 
         public JumpListDTO GetJumps()
         {
-            return new JumpListDTO(_jumpDAO.GetJumps());
+            return _jumpDAO.GetJumps();
         }
 
         public JumpListDTO GetJumpsByUserId()
         {
-            return new JumpListDTO(_jumpDAO.GetJumpsByUserId(_userService.GetUserId()));
+            return _jumpDAO.GetJumpsByUserId(_userService.GetUserId());
         }
 
-        public void UpdateJump(JumpDTO jumpDTO)
+        public void UpdateJump(JumpDTO dto)
         {
-            Jump jump = new Jump(jumpDTO);
-            _jumpDAO.UpdateJump(jump);
+            _jumpDAO.UpdateJump(dto);
         }
 
         public void DeleteJump(int jumpId)

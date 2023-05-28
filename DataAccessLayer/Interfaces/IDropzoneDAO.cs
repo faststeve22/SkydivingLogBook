@@ -1,16 +1,15 @@
-﻿using Logbook.Models;
-using Logbook.Models.Lists;
+﻿using Logbook.PresentationLayer.DTO;
 
 namespace Logbook.DataAccessLayer.Interfaces
 {
     public interface IDropzoneDAO
     {
-        public void AddDropzone(Dropzone dropzone);
-        public Dropzone GetDropzone(int dropzoneId);
-        public DropzoneList GetDropzoneListByUserId(int userId);
-        public DropzoneList GetDropzoneList();
+        void AddDropzone(DropzoneDTO dto);
+        DropzoneDTO GetDropzone(int dropzoneId);
+        DropzoneListDTO GetDropzoneListByUserId(int userId);
+        DropzoneListDTO GetDropzoneList();
 
-        public void UpdateDropzone(Dropzone dropzone);
-        public void DeleteDropzone(int dropzoneId);
+        void UpdateDropzone(DropzoneDTO dto);
+        void DeleteDropzone(int dropzoneId);
     }
 }

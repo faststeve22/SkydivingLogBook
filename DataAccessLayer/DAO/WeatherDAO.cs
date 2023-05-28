@@ -1,6 +1,6 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
 using Logbook.Models;
-using Logbook.Models.Lists;
+using Logbook.PresentationLayer.DTO;
 using System.Data;
 
 namespace Logbook.DataAccessLayer.DAO
@@ -13,24 +13,24 @@ namespace Logbook.DataAccessLayer.DAO
             _connectionFactory = connectionFactory;
         }
 
-        public void AddWeather(Weather weather)
+        public void AddWeather(WeatherDTO dto)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "INSERT INTO Weather (ground_temperature, ground_wind_speed, additional_notes, ground_wind_direction_at_takeoff, ground_wind_direction_at_landing, temperature_at_jump_altitude) VALUES (@groundTemperature, @groundWindSpeed, @additionalNotes, @groundWindDirectionAtTakeoff, @groundWindDirectionAtLanding, @temperatureAtJumpAltitude)";
-                AddParameter(cmd, "@groundTemperature", weather.GroundTemperature);
-                AddParameter(cmd, "@groundWindSpeed", weather.GroundWindSpeed);
-                AddParameter(cmd, "@additionalNotes", weather.Notes);
-                AddParameter(cmd, "@groundWindDirectionAtTakeoff", weather.GroundWindDirectionAtTakeoff);
-                AddParameter(cmd, "@groundWindDirectionAtLanding", weather.GroundWindDirectionAtLanding);
-                AddParameter(cmd, "@temperatureAtJumpAltitude", weather.TemperatureAtJumpAltitude);
+                AddParameter(cmd, "@groundTemperature", dto.GroundTemperature);
+                AddParameter(cmd, "@groundWindSpeed", dto.GroundWindSpeed);
+                AddParameter(cmd, "@additionalNotes", dto.Notes);
+                AddParameter(cmd, "@groundWindDirectionAtTakeoff", dto.GroundWindDirectionAtTakeoff);
+                AddParameter(cmd, "@groundWindDirectionAtLanding", dto.GroundWindDirectionAtLanding);
+                AddParameter(cmd, "@temperatureAtJumpAltitude", dto.TemperatureAtJumpAltitude);
                 cmd.ExecuteNonQuery();
             }
         }
 
-        public Weather GetWeatherById(int weatherId)
+        public WeatherDTO GetWeatherById(int weatherId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
@@ -39,11 +39,11 @@ namespace Logbook.DataAccessLayer.DAO
                 cmd.CommandText = "SELECT weather_id, ground_temperature, ground_wind_speed, additional_notes, ground_wind_direction_at_takeoff, ground_wind_direction_at_landing, temperature_at_jump_altitude FROM Weather WHERE weather_id = @weatherId";
                 AddParameter(cmd, "@weatherId", weatherId);
                 IDataReader reader = cmd.ExecuteReader();
-                return WeatherReader(reader).Weather[0];
+                return new WeatherDTO(WeatherReader(reader).weatherList[0]);
             }
         }
 
-        public WeatherList GetWeatherList()
+        public WeatherListDTO GetWeatherList()
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
@@ -55,13 +55,13 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        public WeatherList GetWeatherListByUserId(int userId)
+        public WeatherListDTO GetWeatherListByUserId(int userId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "SELECT weather_id, ground_temperature, ground_wind_speed, additional_notes, ground_wind_direction_at_takeoff, ground_wind_direction_at_landing, temperature_at_jump_altitude FROM Weather JOIN Jump ON Jump.weather_id = Weather.weather_id WHERE user_id = @userId";
+                cmd.CommandText = "SELECT Weather.weather_id, ground_temperature, ground_wind_speed, additional_notes, ground_wind_direction_at_takeoff, ground_wind_direction_at_landing, temperature_at_jump_altitude FROM Weather JOIN Jump ON Jump.weather_id = Weather.weather_id WHERE user_id = @userId";
                 AddParameter(cmd, "@userId", userId);
                 IDataReader reader = cmd.ExecuteReader();
                 return WeatherReader(reader);
@@ -69,20 +69,20 @@ namespace Logbook.DataAccessLayer.DAO
         }
 
 
-        public void UpdateWeather(Weather weather)
+        public void UpdateWeather(WeatherDTO dto)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "UPDATE Weather SET ground_temperature = @groundTemperature, ground_wind_speed = @groundWindSpeed, additional_notes = @additionalNotes, ground_wind_direction_at_takeoff = @groundWindDirectionAtTakeoff, ground_wind_direction_at_landing = @groundWindDirectionAtLanding, temperature_at_jump_altitude = @temperatureAtJumpAltitude WHERE weather_id = @weatherId";
-                AddParameter(cmd, "@weatherId", weather.WeatherId);
-                AddParameter(cmd, "@groundTemperature", weather.GroundTemperature);
-                AddParameter(cmd, "@groundWindSpeed", weather.GroundWindSpeed);
-                AddParameter(cmd, "@additionalNotes", weather.Notes);
-                AddParameter(cmd, "@groundWindDirectionAtTakeoff", weather.GroundWindDirectionAtTakeoff);
-                AddParameter(cmd, "@groundWindDirectionAtLanding", weather.GroundWindDirectionAtLanding);
-                AddParameter(cmd, "@temperatureAtJumpAltitude", weather.TemperatureAtJumpAltitude);
+                AddParameter(cmd, "@weatherId", dto.WeatherId);
+                AddParameter(cmd, "@groundTemperature", dto.GroundTemperature);
+                AddParameter(cmd, "@groundWindSpeed", dto.GroundWindSpeed);
+                AddParameter(cmd, "@additionalNotes", dto.Notes);
+                AddParameter(cmd, "@groundWindDirectionAtTakeoff", dto.GroundWindDirectionAtTakeoff);
+                AddParameter(cmd, "@groundWindDirectionAtLanding", dto.GroundWindDirectionAtLanding);
+                AddParameter(cmd, "@temperatureAtJumpAltitude", dto.TemperatureAtJumpAltitude);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -111,9 +111,9 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        private WeatherList WeatherReader(IDataReader reader)
+        private WeatherListDTO WeatherReader(IDataReader reader)
         {
-            WeatherList weatherList = new WeatherList();
+            WeatherListDTO weatherListDTO = new WeatherListDTO();
             while(reader.Read())
             {
                 Weather weather = new Weather();
@@ -124,9 +124,9 @@ namespace Logbook.DataAccessLayer.DAO
                 weather.GroundWindDirectionAtTakeoff = Convert.ToString(reader["ground_wind_direction_at_takeoff"]);
                 weather.GroundWindDirectionAtLanding = Convert.ToString(reader["ground_wind_direction_at_landing"]);
                 weather.TemperatureAtJumpAltitude = Convert.ToInt32(reader["temperature_at_jump_altitude"]);
-                weatherList.Add(weather);
+                weatherListDTO.weatherList.Add(weather);
             }
-            return weatherList;
+            return weatherListDTO;
         }
 
         private void AddParameter(IDbCommand cmd, string paramName, object value)

@@ -1,5 +1,4 @@
 ﻿using Logbook.PresentationLayer.DTO;
-using Microsoft.AspNetCore.Components;
 
 namespace Logbook.Models
 {

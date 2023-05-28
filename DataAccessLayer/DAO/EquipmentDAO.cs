@@ -1,6 +1,6 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
 using Logbook.Models;
-using Logbook.Models.Lists;
+using Logbook.PresentationLayer.DTO;
 using System.Data;
 
 namespace Logbook.DataAccessLayer.DAO
@@ -13,21 +13,21 @@ namespace Logbook.DataAccessLayer.DAO
             _connectionFactory = connectionFactory;
         }
 
-        public void AddEquipment(Equipment equipment)
+        public void AddEquipment(EquipmentDTO dto)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "INSERT INTO Equipment (equipment_brand, equipment_model, equipment_type) VALUES (@equipmentBrand, @equipmentModel, @equipmentType)";
-                AddParameter(cmd, "@equipmentBrand", equipment.EquipmentBrand);
-                AddParameter(cmd, "@equipmentModel", equipment.EquipmentModel);
-                AddParameter(cmd, "@equipmentType", equipment.EquipmentType);
+                AddParameter(cmd, "@equipmentBrand", dto.EquipmentBrand);
+                AddParameter(cmd, "@equipmentModel", dto.EquipmentModel);
+                AddParameter(cmd, "@equipmentType", dto.EquipmentType);
                 cmd.ExecuteNonQuery();
             }
         }
 
-        public Equipment GetEquipmentById(int equipmentId)
+        public EquipmentDTO GetEquipmentById(int equipmentId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
@@ -36,11 +36,11 @@ namespace Logbook.DataAccessLayer.DAO
                 cmd.CommandText = "SELECT equipment_id, equipment_brand, equipment_model, equipment_type FROM Equipment WHERE equipment_id = @equipmentId";
                 AddParameter(cmd, "@equipmentId", equipmentId);
                 IDataReader reader = cmd.ExecuteReader();
-                return EquipmentReader(reader)[0];
+                return new EquipmentDTO(EquipmentReader(reader)._equipmentList[0]);
             }
         }
 
-        public EquipmentList GetEquipmentList()
+        public EquipmentListDTO GetEquipmentList()
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
@@ -48,34 +48,34 @@ namespace Logbook.DataAccessLayer.DAO
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "SELECT equipment_id, equipment_brand, equipment_model, equipment_type FROM Equipment";
                 IDataReader reader = cmd.ExecuteReader();
-                return new EquipmentList(EquipmentReader(reader));
+                return EquipmentReader(reader);
             }
         }
 
-        public EquipmentList GetEquipmentListByUserId(int userId)
+        public EquipmentListDTO GetEquipmentListByUserId(int userId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "SELECT equipment_id, equipment_brand, equipment_model, equipment_type FROM Equipment JOIN Jump on Equipment.equipment_id = Jump.equipment_id WHERE user_id = @userId";
+                cmd.CommandText = "SELECT Equipment.equipment_id, equipment_brand, equipment_model, equipment_type FROM Equipment JOIN Jump on Equipment.equipment_id = Jump.equipment_id WHERE user_id = @userId";
                 AddParameter(cmd, "@userId", userId);
                 IDataReader reader = cmd.ExecuteReader();
-                return new EquipmentList(EquipmentReader(reader));
+                return EquipmentReader(reader);
             }
         }
 
-        public void UpdateEquipment(Equipment equipment)
+        public void UpdateEquipment(EquipmentDTO dto)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "UPDATE Equipment SET equipment_brand = @equipmentBrand, equipment_model = @equipmentModel, equipment_type = @equipmentType WHERE equipment_id = @equipmentId";
-                AddParameter(cmd, "@equipmentId", equipment.EquipmentId);
-                AddParameter(cmd, "@equipmentBrand", equipment.EquipmentBrand);
-                AddParameter(cmd, "@equipmentModel", equipment.EquipmentModel);
-                AddParameter(cmd, "@equipmentType", equipment.EquipmentType);
+                AddParameter(cmd, "@equipmentId", dto.EquipmentId);
+                AddParameter(cmd, "@equipmentBrand", dto.EquipmentBrand);
+                AddParameter(cmd, "@equipmentModel", dto.EquipmentModel);
+                AddParameter(cmd, "@equipmentType", dto.EquipmentType);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -104,9 +104,9 @@ namespace Logbook.DataAccessLayer.DAO
             }
         }
 
-        private List<Equipment> EquipmentReader(IDataReader reader)
+        private EquipmentListDTO EquipmentReader(IDataReader reader)
         {
-            List<Equipment> EquipmentList = new List<Equipment>();
+            EquipmentListDTO dto = new EquipmentListDTO();
             while(reader.Read())
             {
                 Equipment equipment = new Equipment();
@@ -114,9 +114,9 @@ namespace Logbook.DataAccessLayer.DAO
                 equipment.EquipmentBrand = Convert.ToString(reader["equipment_brand"]);
                 equipment.EquipmentModel = Convert.ToString(reader["equipment_model"]);
                 equipment.EquipmentType = Convert.ToString(reader["equipment_type"]);
-                EquipmentList.Add(equipment);
+                dto._equipmentList.Add(equipment);
             }
-            return EquipmentList;
+            return dto;
         }
 
         private void AddParameter(IDbCommand cmd, string paramName, object value)
