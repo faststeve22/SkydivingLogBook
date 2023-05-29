@@ -40,7 +40,7 @@ namespace Logbook.PresentationLayer.Controllers
         }
 
         [Authorize]
-        [HttpDelete("{JumpId}")]
+        [HttpDelete("{jumpId}")]
         public void Delete(int jumpId)
         {
             _jumpService.DeleteJump(jumpId);

@@ -4,14 +4,15 @@ namespace Logbook.PresentationLayer.DTO
 {
     public class DropzoneDTO
     {
-        public int Dropzone_id { get; set; }
-        public string Name { get; set; }
-        public string Country { get; set; }
-        public string PhoneNumber { get; set; }
-        public string EmailAddress { get; set; }
-        public string State { get; set; }
-        public string City { get; set; }
-        public string Address { get; set; }
+        public int DropzoneId { get; set; }
+        public string DropzoneName { get; set; }
+        public string DropzoneCountry { get; set; }
+        public string DropzonePhoneNumber { get; set; }
+        public string DropzoneEmailAddress { get; set; }
+        public string DropzoneState { get; set; }
+        public string DropzoneCity { get; set; }
+        public string DropzoneAddress { get; set; }
+        
 
         public DropzoneDTO()
         {
@@ -20,14 +21,14 @@ namespace Logbook.PresentationLayer.DTO
 
         public DropzoneDTO(Dropzone dropzone)
         {
-            Dropzone_id = dropzone.Dropzone_id;
-            Name = dropzone.Name;
-            Country = dropzone.Country;
-            PhoneNumber = dropzone.PhoneNumber;
-            EmailAddress = dropzone.EmailAddress;
-            State = dropzone.State;
-            City = dropzone.City;
-            Address = dropzone.Address;
+            DropzoneId = dropzone.DropzoneId;
+            DropzoneName = dropzone.DropzoneName;
+            DropzoneCountry = dropzone.DropzoneCountry;
+            DropzonePhoneNumber = dropzone.DropzonePhoneNumber;
+            DropzoneEmailAddress = dropzone.DropzoneEmailAddress;
+            DropzoneState = dropzone.DropzoneState;
+            DropzoneCity = dropzone.DropzoneCity;
+            DropzoneAddress = dropzone.DropzoneAddress;
         }
 
     }

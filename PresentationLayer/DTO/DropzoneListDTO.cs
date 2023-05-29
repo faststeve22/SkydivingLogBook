@@ -12,6 +12,10 @@ namespace Logbook.PresentationLayer.DTO
 
         }
 
+        public DropzoneListDTO(List<Dropzone> dropzones)
+        {
+            Dropzones = dropzones;
+        }
         public DropzoneListDTO(DropzoneList list)
         {
             Dropzones = list.Dropzones;

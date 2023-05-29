@@ -1,5 +1,4 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
-using Logbook.Models;
 using Logbook.PresentationLayer.DTO;
 using Logbook.ServiceLayer.Interfaces;
 
@@ -45,11 +44,6 @@ namespace Logbook.ServiceLayer.Services
         public void DeleteEquipment(int equipmentId)
         {
             _equipmentDAO.DeleteEquipment(equipmentId);
-        }
-
-        public void DeleteEquipmentByUserId()
-        {
-            _equipmentDAO.DeleteEquipmentByUserId(_userService.GetUserId());
         }
         
     }

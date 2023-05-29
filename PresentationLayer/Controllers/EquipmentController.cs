@@ -23,7 +23,7 @@ namespace Logbook.PresentationLayer.Controllers
         }
 
         [Authorize]
-        [HttpGet("{EquipmentId}")]
+        [HttpGet("{equipmentId}")]
         public EquipmentDTO Get(int equipmentId)
         {
             return _equipmentService.GetEquipmentById(equipmentId);
@@ -45,14 +45,14 @@ namespace Logbook.PresentationLayer.Controllers
         }
 
         [Authorize]
-        [HttpPut("{EquipmentId}")]
+        [HttpPut]
         public void Put([FromBody] EquipmentDTO dto)
         {
             _equipmentService.UpdateEquipment(dto);
         }
 
         [Authorize]
-        [HttpDelete("{EquipmentId}")]
+        [HttpDelete]
         public void Delete(int id)
         {
             _equipmentService.DeleteEquipment(id);

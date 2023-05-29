@@ -10,6 +10,10 @@ namespace Logbook.Models
         public string LastName { get; set; }
         public string EmailAddress { get; set; }
 
+        public Jumper()
+        {
+
+        }
         public Jumper(UserDTO dto)
         {
             UserId = dto.UserId;

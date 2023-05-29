@@ -2,6 +2,7 @@ using Logbook.Background_Services;
 using Logbook.DataAccessLayer;
 using Logbook.DataAccessLayer.DAO;
 using Logbook.DataAccessLayer.Interfaces;
+using Logbook.DataAccessLayer.Utilities;
 using Logbook.ServiceLayer.Interfaces;
 using Logbook.ServiceLayer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -27,6 +28,7 @@ builder.Services.AddTransient<IEquipmentService, EquipmentService>();
 builder.Services.AddTransient<IWeatherService, WeatherService>();
 builder.Services.AddTransient<IDropzoneService, DropzoneService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IDaoUtilities, DaoUtilities>();
 builder.Services.AddHttpContextAccessor();
 
 

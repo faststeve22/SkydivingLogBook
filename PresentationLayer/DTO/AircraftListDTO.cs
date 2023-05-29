@@ -12,6 +12,11 @@ namespace Logbook.PresentationLayer.DTO
 
         }
 
+        public AircraftListDTO(List<Aircraft> aircraft)
+        {
+            Aircraft = aircraft;
+        }
+
         public AircraftListDTO(AircraftList list)
         {
             Aircraft = list.Aircraft;

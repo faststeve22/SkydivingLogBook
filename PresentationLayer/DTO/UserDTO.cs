@@ -1,4 +1,6 @@
-﻿namespace Logbook.PresentationLayer.DTO
+﻿using Logbook.Models;
+
+namespace Logbook.PresentationLayer.DTO
 {
     public class UserDTO
     {
@@ -8,5 +10,18 @@
         public string LastName { get; set; }
         public string EmailAddress { get; set; }
 
+        public UserDTO()
+        {
+
+        }
+
+        public UserDTO(Jumper jumper)
+        {
+            UserId = jumper.UserId;
+            Username = jumper.Username;
+            FirstName = jumper.FirstName;
+            LastName = jumper.LastName;
+            EmailAddress = jumper.EmailAddress;
+        }
     }
 }

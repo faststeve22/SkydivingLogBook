@@ -8,9 +8,11 @@ namespace Logbook.DataAccessLayer.DAO
     public class AircraftDAO : IAircraftDAO
     {
         private readonly IDbConnectionFactory _connectionFactory;
-        public AircraftDAO(IDbConnectionFactory connectionFactory)
+        private readonly IDaoUtilities _daoUtilities;
+        public AircraftDAO(IDbConnectionFactory connectionFactory, IDaoUtilities daoUtilities)
         {
             _connectionFactory = connectionFactory;
+            _daoUtilities = daoUtilities;
         }
 
         public void AddAircraft(AircraftDTO dto)
@@ -19,8 +21,8 @@ namespace Logbook.DataAccessLayer.DAO
             {
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "INSERT INTO Aircraft (aircraft_id, aircraft_name) VALUES (@aircraftId, @aircraftName)";
-                AddParameter(cmd, "@aircraftName", dto.AircraftName);
+                cmd.CommandText = "INSERT INTO Aircraft (aircraft_name) VALUES (@aircraftName)";
+                _daoUtilities.AddParameter(cmd, dto.AircraftName, "@aircraftName");
                 cmd.ExecuteNonQuery();
             }
         }
@@ -32,9 +34,9 @@ namespace Logbook.DataAccessLayer.DAO
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "SELECT aircraft_id, aircraft_name FROM Aircraft WHERE aircraft_id = @aircraftId";
-                AddParameter(cmd, "@aircraftId", aircraftId);
+                _daoUtilities.AddParameter(cmd, aircraftId, "aircraftId");
                 IDataReader reader = cmd.ExecuteReader();
-                return new AircraftDTO(AircraftReader(reader).Aircraft[0]);
+                return new AircraftDTO(_daoUtilities.MapDataToList<Aircraft>(reader)[0]);
             }
         }
 
@@ -46,7 +48,7 @@ namespace Logbook.DataAccessLayer.DAO
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "SELECT aircraft_id, aircraft_name FROM Aircraft";
                 IDataReader reader = cmd.ExecuteReader();
-                return AircraftReader(reader);
+                return new AircraftListDTO(_daoUtilities.MapDataToList<Aircraft>(reader));
             }
         }
 
@@ -57,9 +59,9 @@ namespace Logbook.DataAccessLayer.DAO
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "SELECT Aircraft.aircraft_id, aircraft_name FROM Aircraft JOIN Jump ON Jump.aircraft_id = Aircraft.aircraft_id WHERE Jump.user_id = @userId";
-                AddParameter(cmd, "@userId", userId);
+                _daoUtilities.AddParameter(cmd, userId, "@userId");
                 IDataReader reader = cmd.ExecuteReader();
-                return AircraftReader(reader);
+                return new AircraftListDTO(_daoUtilities.MapDataToList<Aircraft>(reader));
             }
         }
 
@@ -70,8 +72,7 @@ namespace Logbook.DataAccessLayer.DAO
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "UPDATE Aircraft SET aircraft_name = @aircraftName WHERE aircraft_id = @aircraftId";
-                AddParameter(cmd, "@aircraftId", dto.AircraftId);
-                AddParameter(cmd, "@aircraftName", dto.AircraftName);
+                _daoUtilities.AddParameter(cmd, dto);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -83,31 +84,9 @@ namespace Logbook.DataAccessLayer.DAO
                 conn.Open();
                 IDbCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "DELETE FROM Aircraft WHERE aircraft_id = @aircraftId";
-                AddParameter(cmd, "@aircraftId", aircraftId);
+                _daoUtilities.AddParameter(cmd, aircraftId, "@aircraftId");
                 cmd.ExecuteNonQuery();
             }
         }
-
-        private AircraftListDTO AircraftReader(IDataReader reader)
-        {
-            AircraftListDTO dto = new AircraftListDTO();
-            while(reader.Read())
-            {
-                Aircraft aircraft = new Aircraft();
-                aircraft.AircraftId = Convert.ToInt32(reader["aircraft_id"]);
-                aircraft.AircraftName = Convert.ToString(reader["aircraft_name"]);
-                dto.Aircraft.Add(aircraft);
-            }
-            return dto;
-        }
-
-        private void AddParameter(IDbCommand cmd, string parameterName, object value)
-        {
-            var Parameter = cmd.CreateParameter();
-            Parameter.ParameterName = parameterName;
-            Parameter.Value = value;
-            cmd.Parameters.Add(Parameter);
-        }
-
     }
 }

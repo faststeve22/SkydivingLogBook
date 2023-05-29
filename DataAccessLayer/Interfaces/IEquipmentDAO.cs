@@ -10,7 +10,5 @@ namespace Logbook.DataAccessLayer.Interfaces
         EquipmentListDTO GetEquipmentListByUserId(int userId);
         void UpdateEquipment(EquipmentDTO dto);
         void DeleteEquipment(int equipmentId);
-        void DeleteEquipmentByUserId(int userId);
-
     }
 }

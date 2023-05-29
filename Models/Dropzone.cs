@@ -4,14 +4,14 @@ namespace Logbook.Models
 {
     public class Dropzone
     {
-        public int Dropzone_id { get; set; }
-        public string Name { get; set; }
-        public string Country { get; set; }
-        public string PhoneNumber { get; set; }
-        public string EmailAddress { get; set; }
-        public string State { get; set; }
-        public string City { get; set; }
-        public string Address { get; set; }
+        public int DropzoneId { get; set; }
+        public string DropzoneName { get; set; }
+        public string DropzoneCountry { get; set; }
+        public string DropzonePhoneNumber { get; set; }
+        public string DropzoneEmailAddress { get; set; }
+        public string DropzoneState { get; set; }
+        public string DropzoneCity { get; set; }
+        public string DropzoneAddress { get; set; }
 
         public Dropzone()
         {
@@ -20,14 +20,14 @@ namespace Logbook.Models
 
         public Dropzone(DropzoneDTO dto)
         {
-            Dropzone_id = dto.Dropzone_id;
-            Name = dto.Name;
-            Country = dto.Country;
-            PhoneNumber = dto.PhoneNumber;
-            EmailAddress = dto.EmailAddress;
-            State = dto.State;
-            City = dto.City;
-            Address = dto.Address;
+            DropzoneId = dto.DropzoneId;
+            DropzoneName = dto.DropzoneName;
+            DropzoneCountry = dto.DropzoneCountry;
+            DropzonePhoneNumber = dto.DropzonePhoneNumber;
+            DropzoneEmailAddress = dto.DropzoneEmailAddress;
+            DropzoneState = dto.DropzoneState;
+            DropzoneCity = dto.DropzoneCity;
+            DropzoneAddress = dto.DropzoneAddress;
         }
 
     }

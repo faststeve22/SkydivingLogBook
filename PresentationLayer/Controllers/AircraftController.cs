@@ -38,14 +38,14 @@ namespace Logbook.PresentationLayer.Controllers
         }
 
         [Authorize]
-        [HttpPut("{AircraftId}")]
+        [HttpPut("{aircraftId}")]
         public void Put([FromBody] AircraftDTO aircraftDTO)
         {
             _aircraftService.UpdateAircraft(aircraftDTO);
         }
 
         [Authorize]
-        [HttpDelete("{AircraftId}")]
+        [HttpDelete("{aircraftId}")]
         public void Delete(int aircraftId)
         {
             _aircraftService.DeleteAircraft(aircraftId);
