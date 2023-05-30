@@ -3,6 +3,7 @@ using Logbook.DataAccessLayer;
 using Logbook.DataAccessLayer.DAO;
 using Logbook.DataAccessLayer.Interfaces;
 using Logbook.DataAccessLayer.Utilities;
+using Logbook.ExceptionHandler;
 using Logbook.ServiceLayer.Interfaces;
 using Logbook.ServiceLayer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -84,6 +85,13 @@ builder.Services.AddControllers();
 builder.Services.AddMemoryCache();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddLogging(config =>
+{
+    config.ClearProviders();
+    config.AddConsole();
+    config.AddDebug();
+    config.AddEventSourceLogger();
+});
 
 var app = builder.Build();
 
@@ -93,6 +101,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<CustomExceptionHandler>();
 
 app.UseHttpsRedirection();
 

@@ -1,5 +1,4 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
-using Microsoft.Extensions.Primitives;
 using System.Data;
 
 namespace Logbook.DataAccessLayer.Utilities
