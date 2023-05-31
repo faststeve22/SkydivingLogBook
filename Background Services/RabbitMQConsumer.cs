@@ -38,17 +38,25 @@ namespace Logbook.Background_Services
                 var consumer = new EventingBasicConsumer(_channel);
                 consumer.Received += (model, ea) =>
                 {
-                    var body = ea.Body.ToArray();
-                    var message = Encoding.UTF8.GetString(body);
-                    var userInfo = JsonConvert.DeserializeObject<Jumper>(message);
-                    UserDTO user = new UserDTO();
-                    user.UserId = userInfo.UserId;
-                    user.Username = userInfo.Username;
-                    user.FirstName = userInfo.FirstName;
-                    user.LastName = userInfo.LastName;
-                    user.EmailAddress = userInfo.EmailAddress;
-                    Jumper CreatedUser = new Jumper(_userDAO.AddUser(user));
-                    _rabbitMQPublisher.PublishEventMessage(CreatedUser);
+                    try
+                    {
+                        var body = ea.Body.ToArray();
+                        var message = Encoding.UTF8.GetString(body);
+                        var userInfo = JsonConvert.DeserializeObject<Jumper>(message);
+                        UserDTO user = new UserDTO();
+                        user.UserId = userInfo.UserId;
+                        user.Username = userInfo.Username;
+                        user.FirstName = userInfo.FirstName;
+                        user.LastName = userInfo.LastName;
+                        user.EmailAddress = userInfo.EmailAddress;
+                        _userDAO.AddUser(user);
+                    }
+                    catch(Exception ex)
+                    {
+                        string queueName = "ErrorQueue";  
+                        _rabbitMQPublisher.PublishError(ex.Message);
+                    }
+
                 };
                 _channel.BasicConsume(queue: queueName, autoAck: true, consumer: consumer);
 
