@@ -4,7 +4,7 @@ namespace Logbook.DataAccessLayer.Interfaces
 {
     public interface IEquipmentDAO
     {
-        void AddEquipment(EquipmentDTO dto);
+        EquipmentDTO AddEquipment(EquipmentDTO dto);
         EquipmentDTO GetEquipmentById(int equipmentId);
         EquipmentListDTO GetEquipmentList();
         EquipmentListDTO GetEquipmentListByUserId(int userId);

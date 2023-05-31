@@ -35,8 +35,8 @@ namespace Logbook.PresentationLayer.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] DropzoneDTO dto)
         {
-                _dropzoneService.AddDropzone(dto);
-                return Ok();
+            var newDropzone = _dropzoneService.AddDropzone(dto);
+            return CreatedAtAction(nameof(Get), new { id = newDropzone.DropzoneId }, newDropzone);
         }
 
         [Authorize]
@@ -44,7 +44,7 @@ namespace Logbook.PresentationLayer.Controllers
         public IActionResult Put([FromBody] DropzoneDTO dto)
         {
                 _dropzoneService.UpdateDropzone(dto);
-                return Ok();
+                return NoContent();
         }
 
         [Authorize]
@@ -52,7 +52,7 @@ namespace Logbook.PresentationLayer.Controllers
         public IActionResult Delete(int dropzoneId)
         {
             _dropzoneService.DeleteDropzone(dropzoneId);
-            return Ok();
+            return NoContent();
         }
     }
 }

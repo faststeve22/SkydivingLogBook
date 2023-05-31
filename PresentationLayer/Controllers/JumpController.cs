@@ -29,8 +29,8 @@ namespace Logbook.PresentationLayer.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] JumpDTO jumpDTO)
         {
-            _jumpService.AddJump(jumpDTO);
-            return Ok();
+            JumpDTO CreatedJump = _jumpService.AddJump(jumpDTO);
+            return CreatedAtAction(nameof(Get), new {id = CreatedJump.JumpId}, CreatedJump);
         }
 
         [Authorize]
@@ -38,7 +38,7 @@ namespace Logbook.PresentationLayer.Controllers
         public IActionResult Put([FromBody] JumpDTO jumpDTO)
         {
             _jumpService.UpdateJump(jumpDTO);
-            return Ok();
+            return NoContent();
         }
 
         [Authorize]
@@ -46,7 +46,7 @@ namespace Logbook.PresentationLayer.Controllers
         public IActionResult Delete(int jumpId)
         {
             _jumpService.DeleteJump(jumpId);
-            return Ok();
+            return NoContent();
         }
     }
 }

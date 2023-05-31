@@ -35,8 +35,8 @@ namespace Logbook.PresentationLayer.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] WeatherDTO dto)
         {
-            _weatherService.AddWeather(dto);
-            return Ok();
+           WeatherDTO CreatedWeather = _weatherService.AddWeather(dto);
+            return CreatedAtAction(nameof(Get), new {id = CreatedWeather.WeatherId}, CreatedWeather);
         }
 
         [Authorize]
@@ -44,7 +44,7 @@ namespace Logbook.PresentationLayer.Controllers
         public IActionResult Put([FromBody] WeatherDTO dto)
         {
             _weatherService.UpdateWeather(dto);
-            return Ok();
+            return NoContent();
         }
 
         [Authorize]
@@ -52,7 +52,7 @@ namespace Logbook.PresentationLayer.Controllers
         public IActionResult Delete(int id)
         {
             _weatherService.DeleteWeather(id);
-            return Ok();
+            return NoContent();
         }
     }
 }

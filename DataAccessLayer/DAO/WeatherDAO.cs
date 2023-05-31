@@ -17,7 +17,7 @@ namespace Logbook.DataAccessLayer.DAO
             _daoUtilities = daoUtilities;
         }
 
-        public void AddWeather(WeatherDTO dto)
+        public WeatherDTO AddWeather(WeatherDTO dto)
         {
             try
             {
@@ -27,7 +27,8 @@ namespace Logbook.DataAccessLayer.DAO
                     IDbCommand cmd = conn.CreateCommand();
                     cmd.CommandText = "INSERT INTO Weather (ground_temperature, ground_wind_speed, additional_notes, ground_wind_direction_at_takeoff, ground_wind_direction_at_landing, temperature_at_jump_altitude) VALUES (@groundTemperature, @groundWindSpeed, @notes, @groundWindDirectionAtTakeoff, @groundWindDirectionAtLanding, @temperatureAtJumpAltitude)";
                     _daoUtilities.AddParameter(cmd, dto);
-                    cmd.ExecuteNonQuery();
+                    IDataReader reader = cmd.ExecuteReader();
+                    return new WeatherDTO(_daoUtilities.MapDataToList<Weather>(reader)[0]);
                 }
             }
             catch(SqlException ex)

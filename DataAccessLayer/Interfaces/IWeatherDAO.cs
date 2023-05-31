@@ -4,7 +4,7 @@ namespace Logbook.DataAccessLayer.Interfaces
 {
     public interface IWeatherDAO
     {
-        void AddWeather(WeatherDTO dto);
+        WeatherDTO AddWeather(WeatherDTO dto);
         WeatherDTO GetWeatherById(int weatherId);
         WeatherListDTO GetWeatherList();
         WeatherListDTO GetWeatherListByUserId(int userId);

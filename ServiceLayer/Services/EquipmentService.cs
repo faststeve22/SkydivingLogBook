@@ -15,9 +15,9 @@ namespace Logbook.ServiceLayer.Services
             _userService = userService;
         }
 
-        public void AddEquipment(EquipmentDTO dto)
+        public EquipmentDTO AddEquipment(EquipmentDTO dto)
         {
-            _equipmentDAO.AddEquipment(dto);
+           return _equipmentDAO.AddEquipment(dto);
         }
 
         public EquipmentDTO GetEquipmentById(int equipmentId)

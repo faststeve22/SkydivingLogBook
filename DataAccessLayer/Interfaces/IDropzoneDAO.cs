@@ -4,7 +4,7 @@ namespace Logbook.DataAccessLayer.Interfaces
 {
     public interface IDropzoneDAO
     {
-        void AddDropzone(DropzoneDTO dto);
+        DropzoneDTO AddDropzone(DropzoneDTO dto);
         DropzoneDTO GetDropzone(int dropzoneId);
         DropzoneListDTO GetDropzoneListByUserId(int userId);
         DropzoneListDTO GetDropzoneList();

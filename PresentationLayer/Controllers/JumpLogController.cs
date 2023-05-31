@@ -27,7 +27,7 @@ namespace Logbook.PresentationLayer.Controllers
         public IActionResult Delete()
         {
             _jumpLogService.DeleteJumpLog();
-            return Ok();
+            return NoContent();
         }
     }
 }

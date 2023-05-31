@@ -4,7 +4,7 @@ namespace Logbook.DataAccessLayer.Interfaces
 {
     public interface IJumpDAO
     {
-        void AddJump(JumpDTO dto);
+        JumpDTO AddJump(JumpDTO dto);
         JumpDTO GetJumpById(int jumpId);
         JumpListDTO GetJumps();
         JumpListDTO GetJumpsByUserId(int userId);

@@ -18,15 +18,17 @@ namespace Logbook.DataAccessLayer.DAO
             _daoUtilities = daoUtilities;
         }
 
-        public void AddUser(UserDTO user)
+        public UserDTO AddUser(UserDTO user)
         {
+            //Add try catch that sends Created User or exception to AltitudeAccess API via Rabbit MQ
                 using (IDbConnection conn = _connectionFactory.CreateConnection())
                 {
                     conn.Open();
                     IDbCommand cmd = conn.CreateCommand();
                     cmd.CommandText = "INSERT INTO DbUser (username, first_name, last_name, email_address) Values (@username, @first_name, @last_name, @email_Address)";
                     _daoUtilities.AddParameter(cmd, user);
-                    cmd.ExecuteNonQuery();
+                    IDataReader reader = cmd.ExecuteReader();
+                    return new UserDTO(_daoUtilities.MapDataToList<Jumper>(reader)[0]);
                 }
         }
 

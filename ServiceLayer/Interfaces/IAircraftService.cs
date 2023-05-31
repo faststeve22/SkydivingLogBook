@@ -4,14 +4,14 @@ namespace Logbook.ServiceLayer.Interfaces
 {
     public interface IAircraftService
     {
-        public AircraftDTO GetAircraftById(int aircraftId);
-        public AircraftListDTO GetAircraftList();
-        public AircraftListDTO GetAircraftListByUserId();
+         AircraftDTO GetAircraftById(int aircraftId);
+         AircraftListDTO GetAircraftList();
+         AircraftListDTO GetAircraftListByUserId();
 
 
-        public void AddAircraft(AircraftDTO aircraftDTO);
-        public void UpdateAircraft(AircraftDTO aircraftDTO);
-        public void DeleteAircraft(int aircraftId);
+         AircraftDTO AddAircraft(AircraftDTO aircraftDTO);
+         void UpdateAircraft(AircraftDTO aircraftDTO);
+         void DeleteAircraft(int aircraftId);
 
     }
 }

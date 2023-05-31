@@ -17,7 +17,7 @@ namespace Logbook.DataAccessLayer.DAO
             _daoUtilities = daoUtilities;
         }
 
-        public void AddDropzone(DropzoneDTO dto)
+        public DropzoneDTO AddDropzone(DropzoneDTO dto)
         {
             try
             {
@@ -27,7 +27,8 @@ namespace Logbook.DataAccessLayer.DAO
                     IDbCommand cmd = conn.CreateCommand();
                     cmd.CommandText = "INSERT INTO Dropzone (dropzone_name, dropzone_country, dropzone_phone_number, dropzone_email_address, dropzone_state, dropzone_city, dropzone_address) VALUES(@dropzoneName, @dropzoneCountry, @dropzonePhoneNumber, @dropzoneEmailAddress, @dropzoneState, @dropzoneCity, @dropzoneAddress)";
                     _daoUtilities.AddParameter(cmd, dto);
-                    cmd.ExecuteNonQuery();
+                    IDataReader reader = cmd.ExecuteReader();
+                    return new DropzoneDTO(_daoUtilities.MapDataToList<Dropzone>(reader)[0]);
                 }
             }
             catch(SqlException ex)

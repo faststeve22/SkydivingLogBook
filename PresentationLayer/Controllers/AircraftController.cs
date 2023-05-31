@@ -34,8 +34,8 @@ namespace Logbook.PresentationLayer.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] AircraftDTO aircraftDTO)
         {
-                _aircraftService.AddAircraft(aircraftDTO);
-                return Ok();
+                AircraftDTO CreatedAircraft = _aircraftService.AddAircraft(aircraftDTO);
+                return CreatedAtAction(nameof(Get), new { id = CreatedAircraft.AircraftId }, CreatedAircraft);
         }
 
         [Authorize]
@@ -43,7 +43,7 @@ namespace Logbook.PresentationLayer.Controllers
         public IActionResult Put([FromBody] AircraftDTO aircraftDTO)
         {
                 _aircraftService.UpdateAircraft(aircraftDTO);
-                return Ok();
+                return NoContent();
         }
 
         [Authorize]
@@ -51,7 +51,7 @@ namespace Logbook.PresentationLayer.Controllers
         public IActionResult Delete(int aircraftId)
         {
                 _aircraftService.DeleteAircraft(aircraftId);
-                return Ok();
+                return NoContent();
         }
     }
 }

@@ -4,17 +4,17 @@ namespace Logbook.ServiceLayer.Interfaces
 {
     public interface IJumpService
     {
-        public void AddJump(JumpDTO jump);
+         JumpDTO AddJump(JumpDTO jump);
 
-        public JumpDTO GetJumpById(int jumpId);
+         JumpDTO GetJumpById(int jumpId);
 
-        public JumpListDTO GetJumps();
+         JumpListDTO GetJumps();
 
-        public JumpListDTO GetJumpsByUserId();
+         JumpListDTO GetJumpsByUserId();
 
-        public void UpdateJump(JumpDTO dto);
-        public void DeleteJump(int jumpId);
-        public void DeleteJumpsByUserId();
+         void UpdateJump(JumpDTO dto);
+         void DeleteJump(int jumpId);
+         void DeleteJumpsByUserId();
 
     }
 }

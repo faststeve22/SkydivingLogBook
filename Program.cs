@@ -22,6 +22,7 @@ builder.Services.AddTransient<IEquipmentDAO, EquipmentDAO>();
 builder.Services.AddTransient<IJumpDAO, JumpDAO>();
 builder.Services.AddTransient<IWeatherDAO, WeatherDAO>();
 builder.Services.AddHostedService<RabbitMQConsumer>();
+builder.Services.AddTransient<IRabbitMQPublisher, RabbitMQPublisher>();
 builder.Services.AddTransient<IJumpLogService, JumpLogService>();
 builder.Services.AddTransient<IJumpService, JumpService>();
 builder.Services.AddTransient<IAircraftService, AircraftService>();

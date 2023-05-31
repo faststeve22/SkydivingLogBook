@@ -16,7 +16,7 @@ namespace Logbook.DataAccessLayer.DAO
             _connectionFactory = connectionFactory;
             _daoUtilities = daoUtilities;
         }
-        public void AddJump(JumpDTO dto)
+        public JumpDTO AddJump(JumpDTO dto)
         {
             try
             {
@@ -27,7 +27,8 @@ namespace Logbook.DataAccessLayer.DAO
                     IDbCommand cmd = conn.CreateCommand();
                     cmd.CommandText = "INSERT INTO Jump (user_id, weather_id, aircraft_id, equipment_id, dropzone_id, jump_number, jump_date, jump_type, exit_altitude, landing_pattern, notes, total_jumpers) VALUES (@userId, @weatherId, @aircraftId, @equipmentId, @dropzoneId, @jumpNumber, @jumpDate, @jumpType, @exitAltitude, @landingPattern, @notes, @totalJumpers)";
                     _daoUtilities.AddParameter(cmd, dto);
-                    cmd.ExecuteNonQuery();
+                    IDataReader reader = cmd.ExecuteReader();
+                    return new JumpDTO(_daoUtilities.MapDataToList<Jump>(reader)[0]);
                 }
             }
             catch(SqlException ex)

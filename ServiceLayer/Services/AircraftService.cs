@@ -28,9 +28,9 @@ namespace Logbook.ServiceLayer.Services
         {
             return _aircraftDAO.GetAircraftListByUserId(_userService.GetUserId());
         }
-        public void AddAircraft(AircraftDTO dto)
+        public AircraftDTO AddAircraft(AircraftDTO dto)
         {
-            _aircraftDAO.AddAircraft(dto);
+            return _aircraftDAO.AddAircraft(dto);
         }
 
         public void UpdateAircraft(AircraftDTO dto)

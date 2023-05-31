@@ -4,12 +4,12 @@ namespace Logbook.ServiceLayer.Interfaces
 {
     public interface IDropzoneService
     {
-        public DropzoneDTO GetDropzoneById(int dropzoneId);
-        public DropzoneListDTO GetDropzoneList();
-        public DropzoneListDTO GetDropzoneListByUserId();
-        public void AddDropzone(DropzoneDTO dto);
-        public void UpdateDropzone(DropzoneDTO dto);
-        public void DeleteDropzone(int dropzoneId);
+         DropzoneDTO GetDropzoneById(int dropzoneId);
+         DropzoneListDTO GetDropzoneList();
+         DropzoneListDTO GetDropzoneListByUserId();
+         DropzoneDTO AddDropzone(DropzoneDTO dto);
+         void UpdateDropzone(DropzoneDTO dto);
+         void DeleteDropzone(int dropzoneId);
 
     }
 }

@@ -30,9 +30,9 @@ namespace Logbook.ServiceLayer.Services
             return _dropzoneDAO.GetDropzoneListByUserId(_userService.GetUserId());
         }
 
-        public void AddDropzone(DropzoneDTO dto)
+        public DropzoneDTO AddDropzone(DropzoneDTO dto)
         {
-            _dropzoneDAO.AddDropzone(dto);
+            return _dropzoneDAO.AddDropzone(dto);
         }
 
         public void UpdateDropzone(DropzoneDTO dto)

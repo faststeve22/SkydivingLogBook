@@ -14,10 +14,10 @@ namespace Logbook.ServiceLayer.Services
             _userService = userService;
         }
 
-        public void AddJump(JumpDTO dto)
+        public JumpDTO AddJump(JumpDTO dto)
         {
             dto.UserId = _userService.GetUserId();
-            _jumpDAO.AddJump(dto);
+            return _jumpDAO.AddJump(dto);
         }
         public JumpDTO GetJumpById(int jumpId)
         {

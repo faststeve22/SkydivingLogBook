@@ -4,11 +4,11 @@ namespace Logbook.ServiceLayer.Interfaces
 {
     public interface IEquipmentService
     {
-        public void AddEquipment(EquipmentDTO dto);
-        public EquipmentDTO GetEquipmentById(int equipmentId);
-        public EquipmentListDTO GetEquipmentList();
-        public EquipmentListDTO GetEquipmentListByUserId();
-        public void UpdateEquipment(EquipmentDTO dto);
-        public void DeleteEquipment(int equipmentId);
+         EquipmentDTO AddEquipment(EquipmentDTO dto);
+         EquipmentDTO GetEquipmentById(int equipmentId);
+         EquipmentListDTO GetEquipmentList();
+         EquipmentListDTO GetEquipmentListByUserId();
+         void UpdateEquipment(EquipmentDTO dto);
+         void DeleteEquipment(int equipmentId);
     }
 }

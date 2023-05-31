@@ -4,12 +4,12 @@ namespace Logbook.ServiceLayer.Interfaces
 {
     public interface IWeatherService
     {
-        public void AddWeather(WeatherDTO dto);
-        public WeatherDTO GetWeatherById(int weatherId);
-        public WeatherListDTO GetWeatherList();
-        public WeatherListDTO GetWeatherListByUserId();
-        public void UpdateWeather(WeatherDTO dto);
-        public void DeleteWeather(int weatherId);
-        public void DeleteWeatherByUserId();
+         WeatherDTO AddWeather(WeatherDTO dto);
+         WeatherDTO GetWeatherById(int weatherId);
+         WeatherListDTO GetWeatherList();
+         WeatherListDTO GetWeatherListByUserId();
+         void UpdateWeather(WeatherDTO dto);
+         void DeleteWeather(int weatherId);
+         void DeleteWeatherByUserId();
     }
 }

@@ -17,7 +17,7 @@ namespace Logbook.DataAccessLayer.DAO
             _daoUtilities = daoUtilities;
         }
 
-        public void AddAircraft(AircraftDTO dto)
+        public AircraftDTO AddAircraft(AircraftDTO dto)
         {
             try
             {
@@ -27,7 +27,8 @@ namespace Logbook.DataAccessLayer.DAO
                     IDbCommand cmd = conn.CreateCommand();
                     cmd.CommandText = "INSERT INTO Aircraft (aircraft_name) VALUES (@aircraftName)";
                     _daoUtilities.AddParameter(cmd, dto.AircraftName, "@aircraftName");
-                    cmd.ExecuteNonQuery();
+                    IDataReader reader = cmd.ExecuteReader();
+                    return new AircraftDTO(_daoUtilities.MapDataToList<Aircraft>(reader)[0]);
                 }
             }
             catch(SqlException ex)

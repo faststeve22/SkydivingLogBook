@@ -41,8 +41,8 @@ namespace Logbook.PresentationLayer.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] EquipmentDTO dto)
         {
-            _equipmentService.AddEquipment(dto);
-            return Ok();
+            EquipmentDTO CreatedEquipment = _equipmentService.AddEquipment(dto);
+            return CreatedAtAction(nameof(Get), new { id = CreatedEquipment.EquipmentId }, CreatedEquipment);
         }
 
         [Authorize]
@@ -50,7 +50,7 @@ namespace Logbook.PresentationLayer.Controllers
         public IActionResult Put([FromBody] EquipmentDTO dto)
         {
             _equipmentService.UpdateEquipment(dto);
-            return Ok();
+            return NoContent();
         }
 
         [Authorize]
@@ -58,7 +58,7 @@ namespace Logbook.PresentationLayer.Controllers
         public IActionResult Delete(int id)
         {
             _equipmentService.DeleteEquipment(id);
-            return Ok();
+            return NoContent();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Logbook.DataAccessLayer.DAO
             _daoUtilities = daoUtilities;
         }
 
-        public void AddEquipment(EquipmentDTO dto)
+        public EquipmentDTO AddEquipment(EquipmentDTO dto)
         {
             try
             {
@@ -27,7 +27,8 @@ namespace Logbook.DataAccessLayer.DAO
                     IDbCommand cmd = conn.CreateCommand();
                     cmd.CommandText = "INSERT INTO Equipment (equipment_brand, equipment_model, equipment_type) VALUES (@equipmentBrand, @equipmentModel, @equipmentType)";
                     _daoUtilities.AddParameter(cmd, dto);
-                    cmd.ExecuteNonQuery();
+                    IDataReader reader = cmd.ExecuteReader();
+                   return new EquipmentDTO(_daoUtilities.MapDataToList<Equipment>(reader)[0]);
                 }
             }
             catch(SqlException ex)

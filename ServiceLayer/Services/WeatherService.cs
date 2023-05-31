@@ -15,9 +15,9 @@ namespace Logbook.ServiceLayer.Services
             _userService = userService;
         }
 
-        public void AddWeather(WeatherDTO dto)
+        public WeatherDTO AddWeather(WeatherDTO dto)
         {
-            _weatherDAO.AddWeather(dto); 
+            return _weatherDAO.AddWeather(dto); 
         }
 
         public WeatherDTO GetWeatherById(int weatherId)

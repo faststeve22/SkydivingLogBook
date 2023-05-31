@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Logbook.Models;
 using Logbook.DataAccessLayer.Interfaces;
 using Logbook.PresentationLayer.DTO;
+using Logbook.ServiceLayer.Interfaces;
 
 namespace Logbook.Background_Services
 {
@@ -12,11 +13,12 @@ namespace Logbook.Background_Services
     {
         private readonly IDbUserDAO _userDAO;
         private IConnection _connection;
-        private IModel channel;
-
-        public RabbitMQConsumer(IDbUserDAO userDAO)
+        private IModel _channel;
+        private IRabbitMQPublisher _rabbitMQPublisher;
+        public RabbitMQConsumer(IDbUserDAO userDAO, IRabbitMQPublisher rabbitMQPublisher)
         {
             _userDAO = userDAO;
+            _rabbitMQPublisher = rabbitMQPublisher;
         }
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -28,12 +30,12 @@ namespace Logbook.Background_Services
                 Password = "Password"
             };
             this._connection = factory.CreateConnection();
-            this.channel = _connection.CreateModel();
+            this._channel = _connection.CreateModel();
             {
-                channel.ExchangeDeclare(exchange: "user_events", type: "fanout");
-                var queueName = channel.QueueDeclare(queue: "UserQueue").QueueName;
-                channel.QueueBind(queue: queueName, exchange: "user_events", routingKey: "");
-                var consumer = new EventingBasicConsumer(channel);
+                _channel.ExchangeDeclare(exchange: "user_events", type: "fanout");
+                var queueName = _channel.QueueDeclare(queue: "UserQueue").QueueName;
+                _channel.QueueBind(queue: queueName, exchange: "user_events", routingKey: "");
+                var consumer = new EventingBasicConsumer(_channel);
                 consumer.Received += (model, ea) =>
                 {
                     var body = ea.Body.ToArray();
@@ -45,9 +47,10 @@ namespace Logbook.Background_Services
                     user.FirstName = userInfo.FirstName;
                     user.LastName = userInfo.LastName;
                     user.EmailAddress = userInfo.EmailAddress;
-                    _userDAO.AddUser(user);
+                    Jumper CreatedUser = new Jumper(_userDAO.AddUser(user));
+                    _rabbitMQPublisher.PublishEventMessage(CreatedUser);
                 };
-                channel.BasicConsume(queue: queueName, autoAck: true, consumer: consumer);
+                _channel.BasicConsume(queue: queueName, autoAck: true, consumer: consumer);
 
                 return Task.CompletedTask;
             }
