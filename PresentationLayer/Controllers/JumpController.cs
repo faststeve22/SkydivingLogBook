@@ -20,30 +20,33 @@ namespace Logbook.PresentationLayer.Controllers
 
         [Authorize]
         [HttpGet("{jumpId}")]
-        public JumpDTO Get(int jumpId)
+        public IActionResult Get(int jumpId)
         {
-            return _jumpService.GetJumpById(jumpId);
+            return Ok(_jumpService.GetJumpById(jumpId));
         }
 
         [Authorize]
         [HttpPost]
-        public void Post([FromBody] JumpDTO jumpDTO)
+        public IActionResult Post([FromBody] JumpDTO jumpDTO)
         {
             _jumpService.AddJump(jumpDTO);
+            return Ok();
         }
 
         [Authorize]
         [HttpPut]
-        public void Put([FromBody] JumpDTO jumpDTO)
+        public IActionResult Put([FromBody] JumpDTO jumpDTO)
         {
             _jumpService.UpdateJump(jumpDTO);
+            return Ok();
         }
 
         [Authorize]
         [HttpDelete("{jumpId}")]
-        public void Delete(int jumpId)
+        public IActionResult Delete(int jumpId)
         {
             _jumpService.DeleteJump(jumpId);
+            return Ok();
         }
     }
 }

@@ -17,45 +17,48 @@ namespace Logbook.PresentationLayer.Controllers
 
         [Authorize]
         [HttpGet]
-        public EquipmentListDTO Get()
+        public IActionResult Get()
         {
-            return _equipmentService.GetEquipmentList();
+            return Ok(_equipmentService.GetEquipmentList());
         }
 
         [Authorize]
         [HttpGet("{equipmentId}")]
-        public EquipmentDTO Get(int equipmentId)
+        public IActionResult Get(int equipmentId)
         {
-            return _equipmentService.GetEquipmentById(equipmentId);
+            return Ok(_equipmentService.GetEquipmentById(equipmentId));
         }
 
         [Authorize]
         [HttpGet("User")]
 
-        public EquipmentListDTO GetEquipmentByUser()
+        public IActionResult GetEquipmentByUser()
         {
-            return _equipmentService.GetEquipmentListByUserId();
+            return Ok(_equipmentService.GetEquipmentListByUserId());
         }
 
         [Authorize]
         [HttpPost]
-        public void Post([FromBody] EquipmentDTO dto)
+        public IActionResult Post([FromBody] EquipmentDTO dto)
         {
             _equipmentService.AddEquipment(dto);
+            return Ok();
         }
 
         [Authorize]
         [HttpPut]
-        public void Put([FromBody] EquipmentDTO dto)
+        public IActionResult Put([FromBody] EquipmentDTO dto)
         {
             _equipmentService.UpdateEquipment(dto);
+            return Ok();
         }
 
         [Authorize]
         [HttpDelete]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
             _equipmentService.DeleteEquipment(id);
+            return Ok();
         }
     }
 }

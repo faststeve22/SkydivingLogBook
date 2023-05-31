@@ -19,37 +19,40 @@ namespace Logbook.PresentationLayer.Controllers
 
         [Authorize]
         [HttpGet]
-        public WeatherListDTO Get()
+        public IActionResult Get()
         {
-            return _weatherService.GetWeatherList();
+            return Ok(_weatherService.GetWeatherList());
         }
 
         [Authorize]
         [HttpGet("{WeatherId}")]
-        public WeatherDTO Get(int id)
+        public IActionResult Get(int id)
         {
-            return _weatherService.GetWeatherById(id);
+            return Ok(_weatherService.GetWeatherById(id));
         }
 
         [Authorize]
         [HttpPost]
-        public void Post([FromBody] WeatherDTO dto)
+        public IActionResult Post([FromBody] WeatherDTO dto)
         {
             _weatherService.AddWeather(dto);
+            return Ok();
         }
 
         [Authorize]
         [HttpPut("{WeatherId}")]
-        public void Put([FromBody] WeatherDTO dto)
+        public IActionResult Put([FromBody] WeatherDTO dto)
         {
             _weatherService.UpdateWeather(dto);
+            return Ok();
         }
 
         [Authorize]
         [HttpDelete("{WeatherId}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
             _weatherService.DeleteWeather(id);
+            return Ok();
         }
     }
 }

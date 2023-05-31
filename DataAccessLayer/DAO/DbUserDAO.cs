@@ -1,7 +1,9 @@
 ﻿using Logbook.DataAccessLayer.Interfaces;
+using Logbook.ExceptionHandler.Exceptions;
 using Logbook.Models;
 using Logbook.PresentationLayer.DTO;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace Logbook.DataAccessLayer.DAO
 {
@@ -18,57 +20,78 @@ namespace Logbook.DataAccessLayer.DAO
 
         public void AddUser(UserDTO user)
         {
-            using(IDbConnection conn = _connectionFactory.CreateConnection())
-            {
-                conn.Open();
-                IDbCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "INSERT INTO DbUser (username, first_name, last_name, email_address) Values (@username, @first_name, @last_name, @email_Address)";
-                _daoUtilities.AddParameter(cmd, user);
-                cmd.ExecuteNonQuery();
-            }
+                using (IDbConnection conn = _connectionFactory.CreateConnection())
+                {
+                    conn.Open();
+                    IDbCommand cmd = conn.CreateCommand();
+                    cmd.CommandText = "INSERT INTO DbUser (username, first_name, last_name, email_address) Values (@username, @first_name, @last_name, @email_Address)";
+                    _daoUtilities.AddParameter(cmd, user);
+                    cmd.ExecuteNonQuery();
+                }
         }
 
         public UserDTO GetUser(int userId)
         {
             using (IDbConnection conn = _connectionFactory.CreateConnection())
             {
-                conn.Open();
-                IDbCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "SELECT user_id, username, first_name, last_name, email-address FROM DbUser WHERE user_id = @userId";
-                _daoUtilities.AddParameter(cmd, userId, "@userId");
-                IDataReader reader = cmd.ExecuteReader();
-                if(reader.Read())
+                try
                 {
-                    return new UserDTO(_daoUtilities.MapDataToList<Jumper>(reader)[0]);
+                    conn.Open();
+                    IDbCommand cmd = conn.CreateCommand();
+                    cmd.CommandText = "SELECT user_id, username, first_name, last_name, email-address FROM DbUser WHERE user_id = @userId";
+                    _daoUtilities.AddParameter(cmd, userId, "@userId");
+                    IDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        return new UserDTO(_daoUtilities.MapDataToList<Jumper>(reader)[0]);
+                    }
+                    else
+                    {
+                        throw new UserNotFoundException("User ID not found.");
+                    }
                 }
-                else
+                catch(SqlException ex) 
                 {
-                    throw new Exception("User ID Not Found");
+                    throw new UserException("GetUser", ex);
                 }
             }
         }
 
         public void UpdateUser(UserDTO user)
         {
-            using (IDbConnection conn = _connectionFactory.CreateConnection())
+            try
             {
-                conn.Open();
-                IDbCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "UPDATE DbUser SET username = @username, first_name = @firstName, last_name = @lastName, email_address = @emailAddress WHERE user_id = @userId";
-                _daoUtilities.AddParameter(cmd, user);
-                cmd.ExecuteNonQuery();
+                using (IDbConnection conn = _connectionFactory.CreateConnection())
+                {
+                    conn.Open();
+                    IDbCommand cmd = conn.CreateCommand();
+                    cmd.CommandText = "UPDATE DbUser SET username = @username, first_name = @firstName, last_name = @lastName, email_address = @emailAddress WHERE user_id = @userId";
+                    _daoUtilities.AddParameter(cmd, user);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch(SqlException ex)
+            {
+                throw new UserException("UpdateUser", ex);
             }
         }
 
         public void DeleteUser(int userId)
         {
-            using (IDbConnection conn = _connectionFactory.CreateConnection())
+            try
             {
-                conn.Open();
-                IDbCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "DELETE FROM DbUser WHERE user_id = @userId";
-                _daoUtilities.AddParameter(cmd, userId, "@userId");
-                cmd.ExecuteNonQuery();
+                using (IDbConnection conn = _connectionFactory.CreateConnection())
+                {
+                    conn.Open();
+                    IDbCommand cmd = conn.CreateCommand();
+                    cmd.CommandText = "DELETE FROM DbUser WHERE user_id = @userId";
+                    _daoUtilities.AddParameter(cmd, userId, "@userId");
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch(SqlException ex)
+            {
+                throw new UserException("DeleteUser", ex);
             }
         }
     }

@@ -1,5 +1,4 @@
-﻿using Logbook.PresentationLayer.DTO;
-using Logbook.ServiceLayer.Interfaces;
+﻿using Logbook.ServiceLayer.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,16 +17,17 @@ namespace Logbook.PresentationLayer.Controllers
 
         [Authorize]
         [HttpGet]
-        public JumpLogDTO GetJumpLog()
+        public IActionResult GetJumpLog()
         {
-            return _jumpLogService.GetUserJumpLog();
+            return Ok(_jumpLogService.GetUserJumpLog());
         }
 
         [Authorize]
         [HttpDelete]
-        public void Delete()
+        public IActionResult Delete()
         {
             _jumpLogService.DeleteJumpLog();
+            return Ok();
         }
     }
 }

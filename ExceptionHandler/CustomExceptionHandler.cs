@@ -1,4 +1,5 @@
-﻿using System.Data.Common;
+﻿using Logbook.ExceptionHandler.Exceptions;
+using System.Data.Common;
 using System.Text.Json;
 
 namespace Logbook.ExceptionHandler
@@ -10,11 +11,19 @@ namespace Logbook.ExceptionHandler
 
             private Dictionary<Type, (int StatusCode, string Message)> exceptionDictionary = new Dictionary<Type, (int, string)>
             {
-                { typeof(UnauthorizedAccessException), (401, "Unauthorized access.") },
-                { typeof(), (409, "Username is already taken. Please select a different username.") },
+                { typeof(UnauthorizedAccessException), (401, "Unauthorized access") },
+                { typeof(UserNotFoundException), (500, "An error occured while processing your request") },
                 { typeof(BadHttpRequestException), (400, "Bad HTTP Request") },
-                { typeof(), (404, "User not found. Make sure your username and password are correct.") },
-                { typeof(DbException), (500, "Internal Server Error. Please try again later.") }
+                { typeof(UserException), (500, "The requested operation could not be completed") },
+                { typeof(DropzoneException), (500, "An error occured while processing your Dropzone request")},
+                { typeof(AircraftException), (500, "An error occured while processing your Aircraft request")},
+                { typeof(EquipmentException), (500, "An error occured while processing your Equipment request")},
+                { typeof(JumpException), (500, "An error occured while processing your Jump request")},
+                { typeof(WeatherException), (500, "An error occured while processing your Weather request")},
+                { typeof(DbException), (500, "Internal Server Error. Please try again later")},
+                { typeof(ArgumentNullException), (400, "Bad Request: Check for a null argument")},
+                { typeof(ArgumentOutOfRangeException), (400, "Arguement out of range")},
+                { typeof(TimeoutException), (408, "Request Timeout")}
             };
 
             public CustomExceptionHandler(RequestDelegate next, ILogger<CustomExceptionHandler> logger)

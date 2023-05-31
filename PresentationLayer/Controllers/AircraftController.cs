@@ -18,37 +18,40 @@ namespace Logbook.PresentationLayer.Controllers
 
         [Authorize]
         [HttpGet]
-        public AircraftListDTO Get()
+        public IActionResult Get()
         {
-            return _aircraftService.GetAircraftList();
+            return Ok(_aircraftService.GetAircraftList());
         }
 
         [Authorize]
         [HttpGet("{id}")]
-        public AircraftDTO GetAircraftById(int id)
+        public IActionResult GetAircraftById(int id)
         {
-            return _aircraftService.GetAircraftById(id);
+            return Ok(_aircraftService.GetAircraftById(id));
         }
 
         [Authorize]
         [HttpPost]
-        public void Post([FromBody] AircraftDTO aircraftDTO)
+        public IActionResult Post([FromBody] AircraftDTO aircraftDTO)
         {
-            _aircraftService.AddAircraft(aircraftDTO);
+                _aircraftService.AddAircraft(aircraftDTO);
+                return Ok();
         }
 
         [Authorize]
         [HttpPut("{aircraftId}")]
-        public void Put([FromBody] AircraftDTO aircraftDTO)
+        public IActionResult Put([FromBody] AircraftDTO aircraftDTO)
         {
-            _aircraftService.UpdateAircraft(aircraftDTO);
+                _aircraftService.UpdateAircraft(aircraftDTO);
+                return Ok();
         }
 
         [Authorize]
         [HttpDelete("{aircraftId}")]
-        public void Delete(int aircraftId)
+        public IActionResult Delete(int aircraftId)
         {
-            _aircraftService.DeleteAircraft(aircraftId);
+                _aircraftService.DeleteAircraft(aircraftId);
+                return Ok();
         }
     }
 }

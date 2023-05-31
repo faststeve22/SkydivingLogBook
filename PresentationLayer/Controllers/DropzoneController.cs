@@ -19,37 +19,40 @@ namespace Logbook.PresentationLayer.Controllers
 
         [Authorize]
         [HttpGet]
-        public DropzoneListDTO Get()
+        public IActionResult Get()
         {
-            return _dropzoneService.GetDropzoneList();
+            return Ok(_dropzoneService.GetDropzoneList());
         }
 
         [Authorize]
         [HttpGet("{id}")]
-        public DropzoneDTO Get(int id)
+        public IActionResult Get(int id)
         {
-            return _dropzoneService.GetDropzoneById(id);
+            return Ok(_dropzoneService.GetDropzoneById(id));
         }
 
         [Authorize]
         [HttpPost]
-        public void Post([FromBody] DropzoneDTO dto)
+        public IActionResult Post([FromBody] DropzoneDTO dto)
         {
-            _dropzoneService.AddDropzone(dto);
+                _dropzoneService.AddDropzone(dto);
+                return Ok();
         }
 
         [Authorize]
         [HttpPut]
-        public void Put([FromBody] DropzoneDTO dto)
+        public IActionResult Put([FromBody] DropzoneDTO dto)
         {
-            _dropzoneService.UpdateDropzone(dto);
+                _dropzoneService.UpdateDropzone(dto);
+                return Ok();
         }
 
         [Authorize]
         [HttpDelete("{dropzoneId}")]
-        public void Delete(int dropzoneId)
+        public IActionResult Delete(int dropzoneId)
         {
             _dropzoneService.DeleteDropzone(dropzoneId);
+            return Ok();
         }
     }
 }
