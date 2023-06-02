@@ -47,7 +47,7 @@ namespace Logbook.Background_Services
             this._connection = factory.CreateConnection();
             this._channel = _connection.CreateModel();
             {
-                _channel.ExchangeDeclare(exchange: "user_events", type: "fanout");
+                _channel.ExchangeDeclare(exchange: "user_events", type: "direct");
                 var queueName = _channel.QueueDeclare(queue: "UserQueue").QueueName;
                 _channel.QueueBind(queue: queueName, exchange: "user_events", routingKey: "Info");
                 var consumer = new EventingBasicConsumer(_channel);
