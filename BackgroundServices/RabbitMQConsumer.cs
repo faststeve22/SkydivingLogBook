@@ -9,7 +9,7 @@ using Logbook.ServiceLayer.Interfaces;
 
 namespace Logbook.Background_Services
 {
-    public class RabbitMQConsumer : BackgroundService
+        public class RabbitMQConsumer : BackgroundService
     {
         private readonly IDbUserDAO _userDAO;
         private IConnection _connection;
@@ -20,12 +20,27 @@ namespace Logbook.Background_Services
             _userDAO = userDAO;
             _rabbitMQPublisher = rabbitMQPublisher;
         }
+
+        public ExceptionDTO BuildExceptionDTO(Exception ex)
+        {
+            if (ex == null)
+            {
+                return null;
+            }
+
+            return new ExceptionDTO
+            {
+                Message = ex.Message,
+                Source = ex.Source,
+                InnerException = BuildExceptionDTO(ex.InnerException)
+            };
+        }
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var factory = new ConnectionFactory()
             {
                 HostName = "localhost",
-                Port = 5672, 
+                Port = 0000, 
                 UserName = "Username",
                 Password = "Password"
             };
@@ -34,7 +49,7 @@ namespace Logbook.Background_Services
             {
                 _channel.ExchangeDeclare(exchange: "user_events", type: "fanout");
                 var queueName = _channel.QueueDeclare(queue: "UserQueue").QueueName;
-                _channel.QueueBind(queue: queueName, exchange: "user_events", routingKey: "");
+                _channel.QueueBind(queue: queueName, exchange: "user_events", routingKey: "Info");
                 var consumer = new EventingBasicConsumer(_channel);
                 consumer.Received += (model, ea) =>
                 {
@@ -42,21 +57,14 @@ namespace Logbook.Background_Services
                     {
                         var body = ea.Body.ToArray();
                         var message = Encoding.UTF8.GetString(body);
-                        var userInfo = JsonConvert.DeserializeObject<Jumper>(message);
-                        UserDTO user = new UserDTO();
-                        user.UserId = userInfo.UserId;
-                        user.Username = userInfo.Username;
-                        user.FirstName = userInfo.FirstName;
-                        user.LastName = userInfo.LastName;
-                        user.EmailAddress = userInfo.EmailAddress;
-                        _userDAO.AddUser(user);
+                        var userInfo = JsonConvert.DeserializeObject<UserDTO>(message);
+                        _userDAO.AddUser(userInfo);
                     }
                     catch(Exception ex)
                     {
-                        string queueName = "ErrorQueue";  
-                        _rabbitMQPublisher.PublishError(ex.Message);
+                        ExceptionDTO dto = BuildExceptionDTO(ex);
+                        _rabbitMQPublisher.PublishError(dto);
                     }
-
                 };
                 _channel.BasicConsume(queue: queueName, autoAck: true, consumer: consumer);
 
